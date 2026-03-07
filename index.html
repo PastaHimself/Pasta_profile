@@ -3,25 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pasta | Minecraft Bedrock Addon Creator</title>
+  <meta name="description" content="Pasta - Minecraft Bedrock Addon Creator specializing in 3D modeling, texturing, and scripting." />
+  <title>Pasta | Bedrock Addon Creator</title>
   <style>
     :root {
-      --bg: #0b1020;
-      --bg2: #11182d;
-      --card: rgba(255, 255, 255, 0.08);
-      --card-border: rgba(255, 255, 255, 0.12);
-      --text: #f5f7ff;
-      --muted: #b8c0d9;
-      --accent: #7c5cff;
-      --accent2: #00d4ff;
-      --glow: 0 0 30px rgba(124, 92, 255, 0.35);
-      --radius: 24px;
+      --bg: #09111b;
+      --bg-soft: #0f1d2a;
+      --panel: rgba(16, 31, 44, 0.78);
+      --panel-2: rgba(13, 26, 39, 0.9);
+      --line: rgba(180, 233, 255, 0.12);
+      --text: #eefcff;
+      --muted: #9ec3d0;
+      --accent: #38d9ff;
+      --accent-2: #31c48d;
+      --accent-3: #a3e635;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius: 28px;
+      --radius-sm: 18px;
+      --max: 1120px;
     }
 
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     html {
@@ -29,160 +34,196 @@
     }
 
     body {
-      font-family: Inter, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(124, 92, 255, 0.18), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(0, 212, 255, 0.16), transparent 30%),
-        linear-gradient(135deg, var(--bg), var(--bg2));
-      color: var(--text);
       min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(56, 217, 255, 0.14), transparent 0 28%),
+        radial-gradient(circle at 85% 15%, rgba(163, 230, 53, 0.1), transparent 0 22%),
+        radial-gradient(circle at 75% 80%, rgba(49, 196, 141, 0.1), transparent 0 22%),
+        linear-gradient(180deg, #071018 0%, #0b1723 44%, #0b141d 100%);
       overflow-x: hidden;
     }
 
-    .bg-blur {
+    body::before {
+      content: "";
       position: fixed;
       inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.65), transparent 90%);
       pointer-events: none;
-      overflow: hidden;
       z-index: 0;
     }
 
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(40px);
-      opacity: 0.45;
-      animation: float 12s ease-in-out infinite;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    .blob.one {
-      width: 260px;
-      height: 260px;
-      background: var(--accent);
-      top: 10%;
-      left: 8%;
-    }
-
-    .blob.two {
-      width: 280px;
-      height: 280px;
-      background: var(--accent2);
-      bottom: 8%;
-      right: 6%;
-      animation-delay: 2s;
-    }
-
-    .blob.three {
-      width: 180px;
-      height: 180px;
-      background: #36f1cd;
-      top: 50%;
-      right: 25%;
-      animation-delay: 4s;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) translateX(0) scale(1); }
-      50% { transform: translateY(-25px) translateX(15px) scale(1.05); }
-    }
-
-    .container {
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
       position: relative;
       z-index: 1;
-      width: min(1120px, 92%);
-      margin: 0 auto;
-      padding: 40px 0 80px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 16px;
+      z-index: 20;
+      padding-top: 16px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      background: rgba(7, 16, 24, 0.68);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 999px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(56, 217, 255, 0.24), rgba(49, 196, 141, 0.24));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .brand-mark span {
+      font-weight: 900;
+      font-size: 0.95rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-1px);
     }
 
     .hero {
-      min-height: 100vh;
       display: grid;
-      place-items: center;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: center;
+      min-height: calc(100vh - 110px);
+      padding: 28px 0 48px;
     }
 
     .card {
-      width: 100%;
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: linear-gradient(180deg, rgba(17, 34, 48, 0.82), rgba(10, 20, 31, 0.94));
+      border: 1px solid var(--line);
       border-radius: var(--radius);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      box-shadow: var(--shadow);
+      position: relative;
       overflow: hidden;
-      animation: fadeUp 1s ease both;
     }
 
-    .hero-card {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 24px;
-      padding: 32px;
+    .hero-copy {
+      padding: 38px;
+      isolation: isolate;
     }
 
-    .left, .right {
-      animation: fadeUp 1s ease both;
+    .hero-copy::before,
+    .showcase::before,
+    .section::before {
+      content: "";
+      position: absolute;
+      inset: auto auto 0 0;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(56, 217, 255, 0.18), transparent 66%);
+      pointer-events: none;
     }
 
-    .right {
-      animation-delay: 0.2s;
-    }
-
-    .badge {
+    .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       padding: 10px 16px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--muted);
-      font-size: 0.95rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #c9eff8;
       margin-bottom: 18px;
     }
 
-    .badge span {
+    .eyebrow-dot {
       width: 10px;
       height: 10px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 50%;
-      box-shadow: var(--glow);
-      animation: pulse 1.8s infinite;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 0 5px rgba(56, 217, 255, 0.08), 0 0 28px rgba(56, 217, 255, 0.35);
+      animation: pulse 2.2s infinite;
     }
 
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: 0.75; }
+      50% { transform: scale(1.18); opacity: 0.85; }
     }
 
     h1 {
-      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-size: clamp(2.8rem, 7vw, 5.6rem);
       line-height: 0.95;
-      margin-bottom: 16px;
-      letter-spacing: -2px;
+      letter-spacing: -0.05em;
+      margin-bottom: 18px;
     }
 
-    .gradient-text {
-      background: linear-gradient(90deg, #ffffff, #b7bfff, #7c5cff, #00d4ff);
-      background-size: 200% auto;
+    .gradient {
+      background: linear-gradient(90deg, #ffffff 0%, #adf0ff 28%, #38d9ff 62%, #92f16a 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      animation: shine 6s linear infinite;
+      background-size: 220% auto;
+      animation: shimmer 7s linear infinite;
     }
 
-    @keyframes shine {
-      to { background-position: 200% center; }
+    @keyframes shimmer {
+      to { background-position: 220% center; }
     }
 
-    .subtitle {
-      font-size: 1.1rem;
+    .lead {
       color: var(--muted);
-      max-width: 600px;
-      line-height: 1.7;
+      font-size: 1.08rem;
+      line-height: 1.78;
+      max-width: 62ch;
       margin-bottom: 26px;
     }
 
-    .buttons {
+    .cta-row {
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
@@ -190,409 +231,550 @@
     }
 
     .btn {
-      padding: 14px 22px;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: 700;
-      transition: 0.3s ease;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      font-weight: 800;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: white;
-      box-shadow: var(--glow);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px) scale(1.02);
+      color: #031018;
+      background: linear-gradient(135deg, #8de8ff, #71e7d3 55%, #b7f56d 100%);
+      box-shadow: 0 18px 32px rgba(56, 217, 255, 0.18);
     }
 
     .btn-secondary {
-      border: 1px solid rgba(255, 255, 255, 0.15);
       color: var(--text);
-      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateY(-3px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.16);
     }
 
-    .skills {
+    .pill-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
     }
 
-    .skill-tag {
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #e8ebff;
-      font-size: 0.95rem;
-      transition: 0.3s ease;
+    .pill {
+      padding: 11px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #dbf7ff;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
 
-    .skill-tag:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-      border-color: rgba(255, 255, 255, 0.18);
+    .pill:hover {
+      transform: translateY(-2px);
+      border-color: rgba(141, 232, 255, 0.3);
+      background: rgba(255,255,255,0.07);
     }
 
-    .profile-box {
-      position: relative;
-      height: 100%;
-      min-height: 420px;
+    .showcase {
+      padding: 26px;
+      min-height: 100%;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
     }
 
-    .avatar-card {
-      width: 100%;
-      max-width: 360px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 28px;
-      padding: 28px;
-      text-align: center;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.25);
-      transform-style: preserve-3d;
-      animation: floatCard 5s ease-in-out infinite;
-    }
-
-    @keyframes floatCard {
-      0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-      50% { transform: translateY(-12px) rotateX(4deg) rotateY(-4deg); }
-    }
-
-    .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 24px;
-      margin: 0 auto 18px;
+    .portrait-shell {
+      position: relative;
       display: grid;
       place-items: center;
-      font-size: 3rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: var(--glow);
+      margin-bottom: 20px;
+      perspective: 1000px;
     }
 
-    .avatar-card h2 {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
+    .portrait-shell::before {
+      content: "";
+      position: absolute;
+      width: 82%;
+      height: 82%;
+      border-radius: 28px;
+      background: radial-gradient(circle, rgba(56, 217, 255, 0.25), transparent 65%);
+      filter: blur(18px);
+      z-index: 0;
+      animation: glowFloat 4.5s ease-in-out infinite;
     }
 
-    .avatar-card p {
-      color: var(--muted);
-      margin-bottom: 22px;
+    @keyframes glowFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
-    .stat-grid {
+    .portrait-frame {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 360px);
+      padding: 14px;
+      border-radius: 32px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.28);
+      transform-style: preserve-3d;
+      animation: cardFloat 5.5s ease-in-out infinite;
+    }
+
+    @keyframes cardFloat {
+      0%, 100% { transform: rotateX(0deg) rotateY(0deg) translateY(0px); }
+      50% { transform: rotateX(3deg) rotateY(-4deg) translateY(-8px); }
+    }
+
+    .portrait-frame img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 24px;
+      image-rendering: pixelated;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #a8e8ff;
+    }
+
+    .float-tag {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(7, 18, 28, 0.82);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #dff9ff;
+      font-size: 0.95rem;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      animation: bob 3.4s ease-in-out infinite;
+    }
+
+    .float-tag.one { top: 18px; left: -10px; }
+    .float-tag.two { right: -10px; top: 70px; animation-delay: 0.9s; }
+    .float-tag.three { left: 14px; bottom: 18px; animation-delay: 1.6s; }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .showcase-info {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
 
-    .stat {
-      padding: 16px 10px;
-      border-radius: 16px;
+    .mini-stat {
+      padding: 16px 14px;
+      border-radius: 18px;
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .stat strong {
+    .mini-stat strong {
       display: block;
       font-size: 1.2rem;
       margin-bottom: 4px;
     }
 
-    .stat span {
+    .mini-stat span {
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+    }
+
+    .sections {
+      display: grid;
+      gap: 22px;
+      padding-bottom: 42px;
     }
 
     .section {
-      margin-top: 28px;
       padding: 28px;
-      animation: fadeUp 0.9s ease both;
     }
 
-    .section h3 {
-      font-size: 1.5rem;
-      margin-bottom: 18px;
+    .section h2 {
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
     }
 
-    .about {
+    .section p.section-text {
       color: var(--muted);
       line-height: 1.8;
-      font-size: 1rem;
+      max-width: 75ch;
     }
 
-    .services {
+    .skills-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
       margin-top: 18px;
     }
 
-    .service {
+    .skill-card {
       padding: 22px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.05);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
-      transition: 0.3s ease;
+      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
       position: relative;
       overflow: hidden;
     }
 
-    .service::before {
+    .skill-card::after {
       content: "";
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(124, 92, 255, 0.18), rgba(0, 212, 255, 0.08));
-      opacity: 0;
-      transition: 0.3s ease;
+      inset: auto 0 0 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+      opacity: 0.7;
+      transform: scaleX(0.35);
+      transform-origin: left;
+      transition: transform 0.22s ease;
     }
 
-    .service:hover::before {
-      opacity: 1;
+    .skill-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(141, 232, 255, 0.2);
     }
 
-    .service:hover {
-      transform: translateY(-6px);
-      border-color: rgba(255,255,255,0.18);
+    .skill-card:hover::after {
+      transform: scaleX(1);
     }
 
-    .service .icon {
-      font-size: 1.8rem;
-      margin-bottom: 12px;
+    .skill-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, rgba(56, 217, 255, 0.18), rgba(49, 196, 141, 0.18));
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 1.25rem;
     }
 
-    .service h4 {
+    .skill-card h3 {
+      font-size: 1.12rem;
       margin-bottom: 8px;
-      font-size: 1.1rem;
-      position: relative;
-      z-index: 1;
     }
 
-    .service p {
+    .skill-card p {
       color: var(--muted);
-      line-height: 1.6;
-      position: relative;
-      z-index: 1;
+      line-height: 1.7;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .step {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .step strong {
+      display: inline-flex;
+      width: 34px;
+      height: 34px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      background: rgba(141, 232, 255, 0.12);
+      color: #dff9ff;
+    }
+
+    .step h3 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .step p {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 0.96rem;
     }
 
     .footer {
-      text-align: center;
+      padding: 18px 0 48px;
       color: var(--muted);
-      padding: 28px 10px 10px;
-      font-size: 0.95rem;
+      text-align: center;
     }
 
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
-      transition: 0.8s ease;
+      transform: translateY(26px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
 
-    .reveal.active {
+    .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 920px) {
-      .hero-card {
+    @media (max-width: 980px) {
+      .hero {
         grid-template-columns: 1fr;
       }
 
-      .services {
-        grid-template-columns: 1fr;
+      .showcase {
+        order: -1;
       }
 
-      .profile-box {
-        min-height: auto;
+      .skills-grid,
+      .workflow {
+        grid-template-columns: 1fr 1fr;
       }
     }
 
-    @media (max-width: 640px) {
-      .container {
-        width: 94%;
+    @media (max-width: 720px) {
+      .topbar {
+        position: static;
       }
 
-      .hero-card {
-        padding: 22px;
+      .nav {
+        border-radius: 24px;
+        padding: 14px;
+        align-items: flex-start;
+        flex-direction: column;
       }
 
+      .hero-copy,
+      .showcase,
       .section {
         padding: 22px;
       }
 
-      .stat-grid {
-        grid-template-columns: 1fr;
+      .float-tag {
+        position: static;
+        margin-top: 12px;
+        width: fit-content;
       }
 
-      h1 {
-        letter-spacing: -1px;
+      .portrait-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .showcase-info,
+      .skills-grid,
+      .workflow {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="bg-blur">
-    <div class="blob one"></div>
-    <div class="blob two"></div>
-    <div class="blob three"></div>
-  </div>
+  <div class="wrap">
+    <header class="topbar">
+      <nav class="nav">
+        <a class="brand" href="#home" aria-label="Pasta home">
+          <div class="brand-mark"><span>P</span></div>
+          <span>Pasta</span>
+        </a>
 
-  <div class="container">
-    <section class="hero">
-      <div class="card hero-card">
-        <div class="left">
-          <div class="badge"><span></span> Minecraft Bedrock Addon Creator</div>
-          <h1>
-            Hi, I'm <span class="gradient-text">Pasta</span>
-          </h1>
-          <p class="subtitle">
-            I create Minecraft Bedrock addons with a focus on
-            <strong>3D modeling</strong>, <strong>texturing</strong>, and
-            <strong>scripting</strong>. I build clean, immersive, and polished content
-            that brings ideas to life in-game.
-          </p>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#workflow">Workflow</a>
+        </div>
+      </nav>
+    </header>
 
-          <div class="buttons">
-            <a href="#about" class="btn btn-primary">Explore Profile</a>
-            <a href="#skills" class="btn btn-secondary">My Specialties</a>
+    <main>
+      <section class="hero" id="home">
+        <div class="card hero-copy reveal visible">
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Minecraft Bedrock Addon Creator
           </div>
 
-          <div class="skills" id="skills">
-            <div class="skill-tag">3D Modeling</div>
-            <div class="skill-tag">Texturing</div>
-            <div class="skill-tag">Scripting</div>
-            <div class="skill-tag">Bedrock Addons</div>
-            <div class="skill-tag">Clean UI Design</div>
+          <h1>
+            Hi, I'm <span class="gradient">Pasta</span>
+          </h1>
+
+          <p class="lead">
+            I build Minecraft Bedrock addons with a focus on clean visuals, immersive ideas,
+            and polished gameplay. My main strengths are <strong>3D modeling</strong>,
+            <strong>texturing</strong>, and <strong>scripting</strong>.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#skills">See My Specialties</a>
+            <a class="btn btn-secondary" href="#about">About Me</a>
+          </div>
+
+          <div class="pill-grid">
+            <div class="pill">3D Modeling</div>
+            <div class="pill">Texturing</div>
+            <div class="pill">Scripting</div>
+            <div class="pill">Bedrock Addons</div>
+            <div class="pill">Clean UI</div>
           </div>
         </div>
 
-        <div class="right">
-          <div class="profile-box">
-            <div class="avatar-card">
-              <div class="avatar">P</div>
-              <h2>Pasta</h2>
-              <p>Addon Developer • Modeler • Texture Artist • Scripter</p>
+        <aside class="card showcase reveal">
+          <div class="portrait-shell">
+            <div class="float-tag one">Pixel Art Profile</div>
+            <div class="float-tag two">Modern + Clean</div>
+            <div class="float-tag three">GitHub Pages Ready</div>
 
-              <div class="stat-grid">
-                <div class="stat">
-                  <strong>3D</strong>
-                  <span>Modeling</span>
-                </div>
-                <div class="stat">
-                  <strong>HD</strong>
-                  <span>Textures</span>
-                </div>
-                <div class="stat">
-                  <strong>JS</strong>
-                  <span>Scripting</span>
-                </div>
-              </div>
+            <div class="portrait-frame" id="tilt-card">
+              <img src="profile.png" alt="Pasta profile picture" />
             </div>
           </div>
-        </div>
+
+          <div class="showcase-info">
+            <div class="mini-stat">
+              <strong>3D</strong>
+              <span>Models</span>
+            </div>
+            <div class="mini-stat">
+              <strong>HD</strong>
+              <span>Textures</span>
+            </div>
+            <div class="mini-stat">
+              <strong>JS</strong>
+              <span>Scripting</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <div class="sections">
+        <section class="card section reveal" id="about">
+          <h2>About Me</h2>
+          <p class="section-text">
+            I'm Pasta, a Minecraft Bedrock addon creator who likes turning ideas into game-ready experiences.
+            I combine custom models, polished textures, and scripting to create content that looks good,
+            feels smooth, and stands out without losing the Minecraft feel.
+          </p>
+        </section>
+
+        <section class="card section reveal" id="skills">
+          <h2>What I Specialize In</h2>
+          <p class="section-text">
+            My work focuses on the parts that make an addon feel complete, from visual style to gameplay logic.
+          </p>
+
+          <div class="skills-grid">
+            <article class="skill-card">
+              <div class="skill-icon">▣</div>
+              <h3>3D Modeling</h3>
+              <p>
+                I design custom models for mobs, items, and blocks with clean shapes, readable forms,
+                and a style that fits Bedrock content.
+              </p>
+            </article>
+
+            <article class="skill-card">
+              <div class="skill-icon">✦</div>
+              <h3>Texturing</h3>
+              <p>
+                I create textures that feel polished and distinct while still matching the visual language
+                players expect from Minecraft.
+              </p>
+            </article>
+
+            <article class="skill-card">
+              <div class="skill-icon">⌘</div>
+              <h3>Scripting</h3>
+              <p>
+                I build the gameplay logic behind addons so custom features, interactions, and mechanics
+                work smoothly in-game.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="card section reveal" id="workflow">
+          <h2>My Workflow</h2>
+          <p class="section-text">
+            I usually take a project from concept to final polish through a simple production flow.
+          </p>
+
+          <div class="workflow">
+            <div class="step">
+              <strong>1</strong>
+              <h3>Concept</h3>
+              <p>I start with the idea, theme, and how the addon should feel in gameplay.</p>
+            </div>
+            <div class="step">
+              <strong>2</strong>
+              <h3>Model</h3>
+              <p>I build the 3D assets and make sure the forms are clean and readable.</p>
+            </div>
+            <div class="step">
+              <strong>3</strong>
+              <h3>Texture</h3>
+              <p>I texture the assets to match the style and make the visuals feel complete.</p>
+            </div>
+            <div class="step">
+              <strong>4</strong>
+              <h3>Script</h3>
+              <p>I add behavior, mechanics, and polish so everything works smoothly in Bedrock.</p>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+    </main>
 
-    <section class="card section reveal" id="about">
-      <h3>About Me</h3>
-      <p class="about">
-        I'm Pasta, a Minecraft Bedrock addon creator who enjoys turning creative ideas
-        into polished gameplay experiences. My work combines detailed 3D models,
-        high-quality textures, and functional scripting to build unique content that
-        feels smooth, modern, and fun to use.
-      </p>
-    </section>
-
-    <section class="card section reveal">
-      <h3>What I Specialize In</h3>
-      <div class="services">
-        <div class="service">
-          <div class="icon">🧊</div>
-          <h4>3D Modeling</h4>
-          <p>
-            Designing custom models for mobs, items, blocks, and addon content with a
-            strong focus on clean shapes and game-ready detail.
-          </p>
-        </div>
-
-        <div class="service">
-          <div class="icon">🎨</div>
-          <h4>Texturing</h4>
-          <p>
-            Creating textures that match Minecraft’s style while still making each
-            addon feel unique and visually polished.
-          </p>
-        </div>
-
-        <div class="service">
-          <div class="icon">⚙️</div>
-          <h4>Scripting</h4>
-          <p>
-            Building the logic behind addons using scripting to create custom features,
-            interactions, mechanics, and smooth gameplay behavior.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <div class="footer">
+    <footer class="footer">
       © 2026 Pasta — Minecraft Bedrock Addon Creator
-    </div>
+    </footer>
   </div>
 
   <script>
-    const reveals = document.querySelectorAll(".reveal");
+    const revealItems = document.querySelectorAll('.reveal');
 
-    const observer = new IntersectionObserver((entries) => {
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("active");
+          entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.14 });
 
-    reveals.forEach((el) => observer.observe(el));
+    revealItems.forEach((item) => revealObserver.observe(item));
 
-    // Slight mouse tilt effect on the profile card
-    const card = document.querySelector(".avatar-card");
+    const tiltCard = document.getElementById('tilt-card');
 
-    card.addEventListener("mousemove", (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    tiltCard.addEventListener('mousemove', (event) => {
+      const rect = tiltCard.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -5;
+      const rotateY = ((x - centerX) / centerX) * 5;
 
-      const rotateY = ((x / rect.width) - 0.5) * 12;
-      const rotateX = ((y / rect.height) - 0.5) * -12;
-
-      card.style.transform = `translateY(-6px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      tiltCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
     });
 
-    card.addEventListener("mouseleave", () => {
-      card.style.transform = "";
+    tiltCard.addEventListener('mouseleave', () => {
+      tiltCard.style.transform = '';
     });
   </script>
 </body>
