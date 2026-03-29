@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Pasta — Minecraft Bedrock creator building polished addons, scripts, and shaders with clean design and smooth gameplay." />
+  <title>Pasta | Minecraft Bedrock Creator</title>
+  <style>
+    :root {
+      --bg: #06070b;
+      --bg-2: #0b1020;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-strong: rgba(255, 255, 255, 0.07);
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #f5f7fb;
+      --muted: #a6aec4;
+      --soft: #d7def2;
+      --accent: #7c9cff;
+      --accent-2: #63e6be;
+      --glow: rgba(124, 156, 255, 0.26);
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.36);
+      --max: 1180px;
+      --radius: 28px;
+      --radius-sm: 18px;
+      --transition: 260ms cubic-bezier(.2, .8, .2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 12%, rgba(124, 156, 255, 0.18), transparent 0 28%),
+        radial-gradient(circle at 82% 18%, rgba(99, 230, 190, 0.12), transparent 0 22%),
+        radial-gradient(circle at 50% 100%, rgba(124, 156, 255, 0.14), transparent 0 30%),
+        linear-gradient(180deg, #05060a 0%, #090d17 45%, #06070b 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.45), transparent 82%);
+      opacity: 0.22;
+      z-index: 0;
+    }
+
+    ::selection {
+      background: rgba(124, 156, 255, 0.28);
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 14px;
+      z-index: 40;
+      padding-top: 14px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(10, 12, 18, 0.68);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.24);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, rgba(124, 156, 255, 0.95), rgba(99, 230, 190, 0.85));
+      box-shadow: 0 10px 30px rgba(124, 156, 255, 0.35);
+      font-weight: 900;
+    }
+
+    .nav-links,
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a,
+    .ghost-btn {
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .nav-links a:hover,
+    .ghost-btn:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-1px);
+    }
+
+    .ghost-btn {
+      border: 1px solid rgba(255,255,255,0.08);
+      background: transparent;
+    }
+
+    .hero {
+      min-height: calc(100svh - 92px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+      align-items: center;
+      gap: 42px;
+      padding: 54px 0 28px;
+    }
+
+    .hero-copy {
+      max-width: 720px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: var(--soft);
+      margin-bottom: 22px;
+    }
+
+    .eyebrow-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 0 7px rgba(124, 156, 255, 0.14);
+      animation: pulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+    h1 {
+      font-size: clamp(3.2rem, 9vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: -0.06em;
+      max-width: 10ch;
+      margin-bottom: 18px;
+    }
+
+    .gradient {
+      background: linear-gradient(90deg, #ffffff 0%, #d3ddff 28%, #9cb2ff 55%, #8ef3d5 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 200% auto;
+      animation: shimmer 8s linear infinite;
+    }
+
+    @keyframes shimmer {
+      to { background-position: 200% center; }
+    }
+
+    .lead {
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition), color var(--transition);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #08111d;
+      background: linear-gradient(135deg, #dbe4ff, #9eb6ff 58%, #8ef3d5 100%);
+      box-shadow: 0 18px 40px rgba(124, 156, 255, 0.28);
+    }
+
+    .btn-secondary {
+      border-color: rgba(255,255,255,0.12);
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 640px;
+    }
+
+    .meta-item {
+      padding: 18px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .meta-item strong {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    .meta-item span {
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.6;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 620px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .glow-ring,
+    .glow-ring::before,
+    .glow-ring::after {
+      position: absolute;
+      border-radius: 50%;
+      inset: auto;
+      content: "";
+    }
+
+    .glow-ring {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(124, 156, 255, 0.18), transparent 62%);
+      filter: blur(18px);
+      animation: drift 8s ease-in-out infinite;
+    }
+
+    .glow-ring::before {
+      width: 320px;
+      height: 320px;
+      left: 50px;
+      top: 40px;
+      background: radial-gradient(circle, rgba(99, 230, 190, 0.18), transparent 66%);
+      animation: drift 7s ease-in-out infinite reverse;
+    }
+
+    .glow-ring::after {
+      width: 100%;
+      height: 100%;
+      inset: 0;
+      border: 1px solid rgba(255,255,255,0.06);
+      transform: scale(1.08);
+      animation: spin 24s linear infinite;
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -16px, 0); }
+    }
+
+    @keyframes spin {
+      to { transform: scale(1.08) rotate(360deg); }
+    }
+
+    .profile-shell {
+      position: relative;
+      width: min(100%, 470px);
+      aspect-ratio: 0.92;
+      border-radius: 34px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04)),
+        rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow);
+      transform: translateZ(0);
+      animation: floatPanel 6.5s ease-in-out infinite;
+    }
+
+    @keyframes floatPanel {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .profile-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(5, 7, 11, 0.08), rgba(5, 7, 11, 0.34)),
+        linear-gradient(135deg, rgba(124, 156, 255, 0.14), transparent 48%, rgba(99, 230, 190, 0.08));
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .profile-shell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      image-rendering: pixelated;
+      transform: scale(1.02);
+    }
+
+    .profile-badge,
+    .profile-card {
+      position: absolute;
+      z-index: 2;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(7, 10, 16, 0.58);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 18px 34px rgba(0,0,0,0.24);
+    }
+
+    .profile-badge {
+      top: 18px;
+      right: 18px;
+      border-radius: 999px;
+      padding: 10px 14px;
+      color: var(--soft);
+      animation: bob 4s ease-in-out infinite;
+    }
+
+    .profile-card {
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      border-radius: 22px;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .profile-card small {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.72rem;
+    }
+
+    .profile-card p {
+      line-height: 1.65;
+      color: var(--soft);
+      max-width: 40ch;
+    }
+
+    .section {
+      padding: 110px 0 0;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .section-kicker {
+      color: #c6d2ff;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.76rem;
+      margin-bottom: 12px;
+    }
+
+    .section h2 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      letter-spacing: -0.04em;
+      line-height: 0.98;
+      margin-bottom: 10px;
+    }
+
+    .section-header p,
+    .about-copy p,
+    .project-copy p,
+    .craft-list p,
+    .footer p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+      box-shadow: var(--shadow);
+    }
+
+    .about-copy {
+      padding: 28px;
+    }
+
+    .about-copy p + p {
+      margin-top: 16px;
+    }
+
+    .about-rail {
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .rail-item {
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .rail-item strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .project-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .project-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      padding: 24px;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.025));
+      overflow: hidden;
+      transition: transform var(--transition), border-color var(--transition), background var(--transition), box-shadow var(--transition);
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(124,156,255,0), rgba(124,156,255,0.65), rgba(99,230,190,0));
+      opacity: 0.8;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(156, 178, 255, 0.22);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+    }
+
+    .project-index {
+      color: rgba(255,255,255,0.16);
+      font-size: clamp(2.6rem, 5vw, 4.8rem);
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      line-height: 0.9;
+    }
+
+    .project-copy {
+      display: grid;
+      gap: 14px;
+    }
+
+    .project-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 12px;
+    }
+
+    .project-top h3 {
+      font-size: clamp(1.3rem, 2vw, 1.8rem);
+      letter-spacing: -0.03em;
+    }
+
+    .project-tag,
+    .stack-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: var(--soft);
+      font-size: 0.92rem;
+    }
+
+    .project-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      min-width: 150px;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
+    }
+
+    .project-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(156, 178, 255, 0.24);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .craft-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .craft-card {
+      padding: 24px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.025));
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .craft-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(156, 178, 255, 0.22);
+    }
+
+    .craft-card span {
+      display: inline-flex;
+      width: 46px;
+      height: 46px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      margin-bottom: 18px;
+      font-weight: 700;
+      background: linear-gradient(135deg, rgba(124, 156, 255, 0.18), rgba(99, 230, 190, 0.12));
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .craft-card h3 {
+      font-size: 1.16rem;
+      margin-bottom: 8px;
+    }
+
+    .footer {
+      padding: 100px 0 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: var(--muted);
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-nav a {
+      color: var(--muted);
+      transition: color var(--transition);
+    }
+
+    .footer-nav a:hover {
+      color: var(--text);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s cubic-bezier(.2,.8,.2,1), transform 0.9s cubic-bezier(.2,.8,.2,1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-copy > * {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: intro 0.9s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    .hero-copy > *:nth-child(1) { animation-delay: 0.05s; }
+    .hero-copy > *:nth-child(2) { animation-delay: 0.14s; }
+    .hero-copy > *:nth-child(3) { animation-delay: 0.24s; }
+    .hero-copy > *:nth-child(4) { animation-delay: 0.34s; }
+    .hero-copy > *:nth-child(5) { animation-delay: 0.44s; }
+
+    @keyframes intro {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-top: 42px;
+      }
+
+      .hero-visual {
+        min-height: 480px;
+        order: -1;
+      }
+
+      .about-grid,
+      .section-header,
+      .project-card,
+      .craft-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-links {
+        justify-content: flex-start;
+      }
+
+      .project-index {
+        font-size: 2.8rem;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .site-header {
+        position: static;
+      }
+
+      .nav {
+        border-radius: 24px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-links,
+      .nav-actions {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding-top: 28px;
+      }
+
+      .hero-meta {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-shell {
+        aspect-ratio: 0.9;
+      }
+
+      .section {
+        padding-top: 88px;
+      }
+
+      .about-copy,
+      .about-rail,
+      .project-card,
+      .craft-card {
+        padding: 22px;
+      }
+
+      .profile-card {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+      }
+
+      .profile-badge {
+        top: 14px;
+        right: 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .reveal,
+      .hero-copy > * {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <nav class="nav">
+        <a href="#home" class="brand" aria-label="Pasta home">
+          <span class="brand-mark">P</span>
+          <span>Pasta</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#craft">Craft</a>
+        </div>
+
+        <div class="nav-actions">
+          <a class="ghost-btn" href="#projects">View Work</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="eyebrow-dot"></span>
+            Minecraft Bedrock Addon Creator
+          </div>
+
+          <h1>
+            I build <span class="gradient">Bedrock experiences</span> that feel polished.
+          </h1>
+
+          <p class="lead">
+            I’m Pasta — a creator focused on Minecraft Bedrock addons, systems, and shaders. I combine clean visual direction, practical scripting, and game-feel polish to ship projects that are readable, immersive, and fun to use.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#projects">Explore Projects</a>
+            <a class="btn btn-secondary" href="#about">About Me</a>
+          </div>
+
+          <div class="hero-meta">
+            <div class="meta-item">
+              <strong>Addons</strong>
+              <span>Gameplay systems and multiplayer-focused experiences for Bedrock.</span>
+            </div>
+            <div class="meta-item">
+              <strong>Scripting</strong>
+              <span>Utility-driven mechanics built to feel smooth and production-ready.</span>
+            </div>
+            <div class="meta-item">
+              <strong>Shaders</strong>
+              <span>Visual upgrades that push atmosphere without losing clarity.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="glow-ring" aria-hidden="true"></div>
+
+          <div class="profile-shell">
+            <img src="profile.png" alt="Pasta profile picture" />
+            <div class="profile-badge">Creator • Designer • Scripter</div>
+            <div class="profile-card">
+              <small>Focused on Bedrock quality</small>
+              <p>
+                From faction systems to visual packs, I like building projects that look clean, play smoothly, and feel intentional from the first interaction.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="section-header reveal">
+          <div>
+            <div class="section-kicker">About</div>
+            <h2>Clean design. Useful systems. Better game feel.</h2>
+          </div>
+          <p>
+            I build Minecraft Bedrock content with a balance of visual direction and practical gameplay logic, so the result feels sharp without becoming overdesigned.
+          </p>
+        </div>
+
+        <div class="about-grid reveal">
+          <article class="panel about-copy">
+            <p>
+              My work sits between design and implementation. I care about how a project reads visually, how intuitive it feels in play, and how consistent the final experience is from start to finish.
+            </p>
+            <p>
+              That means thinking about more than just features: model language, texture clarity, interface polish, progression flow, and scripting behavior all need to work together.
+            </p>
+            <p>
+              Whether I’m building a PvP-focused addon, a server utility system, or a shader pack, the goal stays the same — make it feel clean, modern, and worth coming back to.
+            </p>
+          </article>
+
+          <aside class="panel about-rail">
+            <div class="rail-item">
+              <strong>3D modeling</strong>
+              <p>Readable shapes and assets that fit Bedrock without visual clutter.</p>
+            </div>
+            <div class="rail-item">
+              <strong>Texturing</strong>
+              <p>Polished materials and color work that support the mood of the project.</p>
+            </div>
+            <div class="rail-item">
+              <strong>Scripting</strong>
+              <p>Gameplay logic, utility features, and mechanics that stay clean under real use.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="projects">
+        <div class="section-header reveal">
+          <div>
+            <div class="section-kicker">Selected Work</div>
+            <h2>Projects I want front and center.</h2>
+          </div>
+          <p>
+            A mix of faction gameplay, server tools, progression systems, and visual enhancement — all published for Minecraft Bedrock on CurseForge.
+          </p>
+        </div>
+
+        <div class="project-list">
+          <article class="project-card reveal">
+            <div class="project-index">01</div>
+            <div class="project-copy">
+              <div class="project-top">
+                <h3>EliteFaction</h3>
+                <span class="project-tag">Addon</span>
+                <span class="project-tag">PvP</span>
+                <span class="project-tag">Multiplayer</span>
+              </div>
+              <p>
+                A faction addon for Minecraft Bedrock focused on land claiming, base building, and competitive faction warfare.
+              </p>
+              <div class="stack-row">
+                <span class="stack-tag">Territory systems</span>
+                <span class="stack-tag">Strategic PvP</span>
+                <span class="stack-tag">Server-ready gameplay</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/elitefaction" target="_blank" rel="noreferrer">View Project</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-index">02</div>
+            <div class="project-copy">
+              <div class="project-top">
+                <h3>EasyShop</h3>
+                <span class="project-tag">Script</span>
+                <span class="project-tag">Utility</span>
+              </div>
+              <p>
+                A simple and practical way to create shop systems in Minecraft Bedrock, designed for quick setup and clean everyday use.
+              </p>
+              <div class="stack-row">
+                <span class="stack-tag">Economy tools</span>
+                <span class="stack-tag">Clean setup</span>
+                <span class="stack-tag">Player-friendly flow</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/scripts/easyshop" target="_blank" rel="noreferrer">View Project</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-index">03</div>
+            <div class="project-copy">
+              <div class="project-top">
+                <h3>Job System Add-on</h3>
+                <span class="project-tag">Script</span>
+                <span class="project-tag">Progression</span>
+              </div>
+              <p>
+                A Bedrock add-on that introduces jobs into the game, giving servers a structured way to add progression, roles, and repeatable player goals.
+              </p>
+              <div class="stack-row">
+                <span class="stack-tag">Role systems</span>
+                <span class="stack-tag">Progression design</span>
+                <span class="stack-tag">Server mechanics</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/scripts/job-system-add-on" target="_blank" rel="noreferrer">View Project</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-index">04</div>
+            <div class="project-copy">
+              <div class="project-top">
+                <h3>Pasta Shaders</h3>
+                <span class="project-tag">Texture Pack</span>
+                <span class="project-tag">Shaders</span>
+              </div>
+              <p>
+                A vibrant Minecraft Bedrock shader pack built to push atmosphere, color, and visual depth while keeping the world readable.
+              </p>
+              <div class="stack-row">
+                <span class="stack-tag">Color grading</span>
+                <span class="stack-tag">Atmosphere</span>
+                <span class="stack-tag">Visual clarity</span>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/texture-packs/pasta-shader" target="_blank" rel="noreferrer">View Project</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="craft">
+        <div class="section-header reveal">
+          <div>
+            <div class="section-kicker">Craft</div>
+            <h2>How I approach a project.</h2>
+          </div>
+          <p>
+            I keep the process tight: strong concept direction first, clear implementation second, and polishing passes that make the whole thing feel intentional.
+          </p>
+        </div>
+
+        <div class="craft-grid">
+          <article class="craft-card reveal">
+            <span>01</span>
+            <h3>Direction</h3>
+            <p>I start with the core mood, feature focus, and how the project should read to a player at a glance.</p>
+          </article>
+
+          <article class="craft-card reveal">
+            <span>02</span>
+            <h3>Build</h3>
+            <p>I design the assets and systems so the visuals and mechanics feel like the same product, not separate parts.</p>
+          </article>
+
+          <article class="craft-card reveal">
+            <span>03</span>
+            <h3>Polish</h3>
+            <p>I refine pacing, feedback, and presentation until the experience feels smooth, clean, and ready to publish.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer reveal">
+      <p>© 2026 Pasta — Minecraft Bedrock creator.</p>
+      <div class="footer-nav">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#craft">Craft</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const revealItems = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.14,
+      rootMargin: '0px 0px -6% 0px'
+    });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+
+    const visual = document.querySelector('.hero-visual');
+    const root = document.documentElement;
+
+    const handlePointerMove = (event) => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const x = (event.clientX / window.innerWidth - 0.5) * 14;
+      const y = (event.clientY / window.innerHeight - 0.5) * 14;
+      root.style.setProperty('--pointer-x', x.toFixed(2) + 'px');
+      root.style.setProperty('--pointer-y', y.toFixed(2) + 'px');
+      if (visual) {
+        visual.style.transform = `translate3d(${x * 0.45}px, ${y * 0.45}px, 0)`;
+      }
+    };
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+  </script>
+</body>
+</html>
