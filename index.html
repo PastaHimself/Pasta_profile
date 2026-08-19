@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Pasta builds Minecraft Bedrock addons, scripts, shaders, UI experiments, and other projects from idea to release." />
+  <meta name="theme-color" content="#090a0d" />
+  <title>Pasta | Minecraft Bedrock Creator</title>
+  <style>
+    :root {
+      --bg: #090a0d;
+      --bg-soft: #0f1116;
+      --panel: #12151b;
+      --panel-2: #171a21;
+      --paper: #f2f0e9;
+      --paper-ink: #151616;
+      --text: #f4f3ee;
+      --muted: #a8abb3;
+      --muted-2: #727783;
+      --line: rgba(255, 255, 255, 0.11);
+      --line-strong: rgba(255, 255, 255, 0.2);
+      --acid: #d8ff5d;
+      --acid-ink: #11150a;
+      --blue: #91a8ff;
+      --peach: #ffb27f;
+      --pink: #ff8ab8;
+      --danger: #ff7e72;
+      --max: 1240px;
+      --radius-xl: 34px;
+      --radius-lg: 26px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --ease: 240ms cubic-bezier(.2, .8, .2, 1);
+      --shadow: 0 32px 90px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% -5%, rgba(145, 168, 255, 0.12), transparent 26rem),
+        radial-gradient(circle at 88% 4%, rgba(216, 255, 93, 0.08), transparent 24rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.32;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
+    }
+
+    ::selection {
+      color: var(--acid-ink);
+      background: var(--acid);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .shell {
+      width: min(calc(100% - 36px), var(--max));
+      margin-inline: auto;
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    .site-header {
+      position: fixed;
+      inset: 14px 0 auto;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .nav {
+      min-height: 62px;
+      padding: 8px 9px 8px 11px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(9, 10, 13, 0.82);
+      box-shadow: 0 16px 46px rgba(0, 0, 0, 0.27);
+      backdrop-filter: blur(18px) saturate(135%);
+      -webkit-backdrop-filter: blur(18px) saturate(135%);
+      pointer-events: auto;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: fit-content;
+      font-weight: 820;
+      letter-spacing: -0.035em;
+    }
+
+    .brand-avatar {
+      width: 42px;
+      height: 42px;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      background: var(--panel-2);
+    }
+
+    .brand-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 680;
+      transition: color var(--ease), background var(--ease);
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible,
+    .nav-links a.is-active {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+      outline: none;
+    }
+
+    .nav-links a.is-active::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 4px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--acid);
+      transform: translateX(-50%);
+    }
+
+    .contact-trigger,
+    .button,
+    .filter-button,
+    .copy-button,
+    .dialog-close {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .nav-contact {
+      min-height: 44px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 12px;
+      color: var(--acid-ink);
+      background: var(--acid);
+      font-size: 0.9rem;
+      font-weight: 820;
+      transition: transform var(--ease), background var(--ease), box-shadow var(--ease);
+    }
+
+    .nav-contact:hover,
+    .nav-contact:focus-visible {
+      transform: translateY(-2px);
+      background: #e5ff88;
+      box-shadow: 0 14px 34px rgba(216, 255, 93, 0.16);
+      outline: none;
+    }
+
+    .hero {
+      padding: 146px 0 74px;
+    }
+
+    .hero-topline {
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 720;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .availability {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .availability-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--acid);
+      box-shadow: 0 0 18px rgba(216, 255, 93, 0.58);
+    }
+
+    .hero h1 {
+      max-width: 12.5ch;
+      font-size: clamp(4rem, 8.7vw, 8.3rem);
+      line-height: 0.88;
+      letter-spacing: -0.073em;
+      font-weight: 880;
+    }
+
+    .hero h1 .soft {
+      color: #a9adb5;
+    }
+
+    .hero h1 .accent {
+      color: var(--acid);
+    }
+
+    .hero-lower {
+      margin-top: 42px;
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(420px, 1.22fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .hero-intro {
+      padding: 8px 20px 8px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .hero-intro p {
+      max-width: 55ch;
+      color: #c2c5cc;
+      font-size: clamp(1.05rem, 1.35vw, 1.18rem);
+      line-height: 1.72;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .button {
+      min-height: 50px;
+      padding: 0 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-radius: 12px;
+      font-weight: 790;
+      letter-spacing: -0.015em;
+      transition: transform var(--ease), border-color var(--ease), background var(--ease), color var(--ease), box-shadow var(--ease);
+    }
+
+    .button-primary {
+      color: var(--acid-ink);
+      background: var(--acid);
+    }
+
+    .button-primary:hover,
+    .button-primary:focus-visible {
+      transform: translateY(-2px);
+      background: #e5ff88;
+      box-shadow: 0 16px 40px rgba(216, 255, 93, 0.16);
+      outline: none;
+    }
+
+    .button-secondary {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .button-secondary:hover,
+    .button-secondary:focus-visible {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.07);
+      outline: none;
+    }
+
+    .hero-browser {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .browser-bar {
+      min-height: 62px;
+      padding: 11px 13px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .browser-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.23);
+    }
+
+    .browser-dots span:first-child {
+      background: var(--danger);
+    }
+
+    .browser-field {
+      min-height: 38px;
+      padding: 0 13px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: #c9ccd3;
+      background: rgba(0, 0, 0, 0.16);
+      font-size: 0.82rem;
+    }
+
+    .browser-field span:first-child {
+      color: var(--muted-2);
+    }
+
+    .browser-count {
+      padding: 7px 9px;
+      border-radius: 8px;
+      color: var(--acid-ink);
+      background: var(--acid);
+      font-size: 0.7rem;
+      font-weight: 850;
+    }
+
+    .browser-grid {
+      padding: 13px;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      grid-template-rows: repeat(2, minmax(150px, 1fr));
+      gap: 11px;
+      min-height: 450px;
+    }
+
+    .browser-project {
+      position: relative;
+      min-height: 160px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--panel-2);
+      isolation: isolate;
+      transition: transform var(--ease), border-color var(--ease);
+    }
+
+    .browser-project:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .browser-project:first-child {
+      grid-row: 1 / 3;
+    }
+
+    .browser-project::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(to top, rgba(6, 7, 10, 0.88), transparent 58%);
+      pointer-events: none;
+    }
+
+    .browser-project img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 520ms cubic-bezier(.2, .8, .2, 1), filter var(--ease);
+    }
+
+    .browser-project:hover img {
+      transform: scale(1.04);
+    }
+
+    .browser-project-copy {
+      position: absolute;
+      inset: auto 15px 14px;
+      z-index: 2;
+    }
+
+    .browser-project-copy small {
+      display: block;
+      margin-bottom: 4px;
+      color: rgba(255, 255, 255, 0.67);
+      font-size: 0.66rem;
+      font-weight: 720;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .browser-project-copy strong {
+      display: block;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .browser-project:first-child .browser-project-copy strong {
+      font-size: 1.35rem;
+    }
+
+    .proof-strip {
+      padding: 16px 0 0;
+    }
+
+    .proof-row {
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .proof-note,
+    .proof-stat {
+      min-height: 126px;
+      padding: 24px 22px;
+    }
+
+    .proof-note {
+      display: flex;
+      align-items: center;
+      color: #c6c9cf;
+      line-height: 1.6;
+    }
+
+    .proof-stat {
+      border-left: 1px solid var(--line);
+    }
+
+    .proof-stat strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: clamp(2rem, 3.8vw, 3.6rem);
+      line-height: 0.94;
+      letter-spacing: -0.055em;
+    }
+
+    .proof-stat span {
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+
+    .section {
+      padding: 124px 0 0;
+      scroll-margin-top: 90px;
+    }
+
+    .section-heading {
+      margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 430px);
+      align-items: end;
+      gap: 32px;
+    }
+
+    .section-label {
+      margin-bottom: 11px;
+      color: var(--acid);
+      font-size: 0.72rem;
+      font-weight: 820;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      max-width: 12ch;
+      font-size: clamp(2.8rem, 5.8vw, 5.8rem);
+      line-height: 0.92;
+      letter-spacing: -0.06em;
+      font-weight: 850;
+    }
+
+    .section-heading > p {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .work-toolbar {
+      margin-bottom: 14px;
+      padding: 10px 10px 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .work-toolbar-title {
+      min-width: fit-content;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    .filter-button {
+      min-height: 36px;
+      padding: 0 11px;
+      border-radius: 9px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 0.78rem;
+      font-weight: 720;
+      transition: color var(--ease), background var(--ease);
+    }
+
+    .filter-button:hover,
+    .filter-button:focus-visible,
+    .filter-button[aria-pressed="true"] {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.07);
+      outline: none;
+    }
+
+    .filter-button[aria-pressed="true"] {
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .project-card {
+      --mx: 50%;
+      --my: 20%;
+      position: relative;
+      min-height: 430px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, 0.07), transparent 30%),
+        var(--panel);
+      isolation: isolate;
+      transition: transform var(--ease), border-color var(--ease), opacity var(--ease);
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .project-card.is-hidden {
+      display: none;
+    }
+
+    .project-card.large {
+      grid-column: span 7;
+      min-height: 540px;
+    }
+
+    .project-card.medium {
+      grid-column: span 5;
+      min-height: 540px;
+    }
+
+    .project-card.half {
+      grid-column: span 6;
+    }
+
+    .project-card.third {
+      grid-column: span 4;
+      min-height: 360px;
+    }
+
+    .project-card.paper {
+      color: var(--paper-ink);
+      border-color: rgba(255, 255, 255, 0.28);
+      background: var(--paper);
+    }
+
+    .project-card.sunny {
+      background:
+        radial-gradient(circle at 78% 14%, rgba(255, 80, 159, 0.35), transparent 30%),
+        #25131d;
+    }
+
+    .project-card.faction {
+      background:
+        radial-gradient(circle at 84% 12%, rgba(94, 126, 255, 0.3), transparent 30%),
+        #101624;
+    }
+
+    .project-card.vhs {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0)),
+        #111317;
+    }
+
+    .card-top {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-kind,
+    .card-stat {
+      width: fit-content;
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      color: #d0d3da;
+      background: rgba(0, 0, 0, 0.16);
+      font-size: 0.68rem;
+      font-weight: 750;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .paper .card-kind,
+    .paper .card-stat {
+      color: #4b4d4c;
+      border-color: rgba(0, 0, 0, 0.14);
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .project-art {
+      position: absolute;
+      z-index: 1;
+      top: 66px;
+      right: 22px;
+      width: clamp(190px, 25vw, 330px);
+      border-radius: 26px;
+      transform: rotate(4deg);
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.38);
+      transition: transform 500ms cubic-bezier(.2, .8, .2, 1), box-shadow var(--ease);
+    }
+
+    .project-card.large .project-art {
+      width: clamp(250px, 32vw, 410px);
+      top: 62px;
+      right: 26px;
+    }
+
+    .project-card.medium .project-art {
+      width: clamp(220px, 28vw, 340px);
+      top: 70px;
+      right: -18px;
+    }
+
+    .project-card.third .project-art {
+      width: 170px;
+      top: 68px;
+      right: -18px;
+      border-radius: 22px;
+    }
+
+    .project-card:hover .project-art {
+      transform: translateY(-7px) rotate(1.5deg) scale(1.025);
+      box-shadow: 0 34px 72px rgba(0, 0, 0, 0.44);
+    }
+
+    .project-copy {
+      position: relative;
+      z-index: 3;
+      max-width: 530px;
+      margin-top: auto;
+      padding-top: 165px;
+    }
+
+    .project-card.third .project-copy {
+      padding-top: 120px;
+    }
+
+    .project-copy h3 {
+      max-width: 11ch;
+      margin-bottom: 12px;
+      font-size: clamp(2rem, 4vw, 4.3rem);
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+    }
+
+    .project-card.third .project-copy h3 {
+      font-size: clamp(1.7rem, 3vw, 2.7rem);
+    }
+
+    .project-copy p {
+      max-width: 52ch;
+      margin-bottom: 18px;
+      color: #b8bdc6;
+      line-height: 1.62;
+    }
+
+    .paper .project-copy p {
+      color: #575b59;
+    }
+
+    .project-tags {
+      margin-bottom: 17px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .project-tag {
+      padding: 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: #c5c9d0;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.74rem;
+      font-weight: 660;
+    }
+
+    .paper .project-tag {
+      color: #515451;
+      border-color: rgba(0, 0, 0, 0.12);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .project-link {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      transition: gap var(--ease), color var(--ease);
+    }
+
+    .project-link::after {
+      content: "↗";
+      color: var(--acid);
+    }
+
+    .paper .project-link::after {
+      color: #617000;
+    }
+
+    .project-link:hover,
+    .project-link:focus-visible {
+      gap: 12px;
+      color: var(--acid);
+      outline: none;
+    }
+
+    .paper .project-link:hover,
+    .paper .project-link:focus-visible {
+      color: #4c5a00;
+    }
+
+    .all-projects-link {
+      margin-top: 14px;
+      min-height: 62px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.025);
+      transition: color var(--ease), background var(--ease), border-color var(--ease);
+    }
+
+    .all-projects-link:hover,
+    .all-projects-link:focus-visible {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--line-strong);
+      outline: none;
+    }
+
+    .all-projects-link strong {
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .dictionary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .dictionary-card {
+      min-height: 250px;
+      padding: 28px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.02);
+      transition: background var(--ease);
+    }
+
+    .dictionary-card:hover {
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .dictionary-top {
+      margin-bottom: 56px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .dictionary-token {
+      color: var(--muted-2);
+      font-size: 0.72rem;
+    }
+
+    .dictionary-pill {
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #c8cbd2;
+      font-size: 0.7rem;
+    }
+
+    .dictionary-card h3 {
+      margin-bottom: 9px;
+      font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+      letter-spacing: -0.045em;
+    }
+
+    .dictionary-card p {
+      max-width: 50ch;
+      color: var(--muted);
+      line-height: 1.67;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+      gap: 14px;
+    }
+
+    .about-card {
+      min-height: 520px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at 76% 8%, rgba(216, 255, 93, 0.09), transparent 25%),
+        var(--panel);
+    }
+
+    .profile-chip {
+      width: fit-content;
+      padding: 7px 10px 7px 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #d1d4da;
+      background: rgba(255, 255, 255, 0.035);
+      font-size: 0.78rem;
+    }
+
+    .profile-chip img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .about-card h3 {
+      max-width: 9ch;
+      margin-bottom: 16px;
+      font-size: clamp(2.6rem, 5.4vw, 5.1rem);
+      line-height: 0.9;
+      letter-spacing: -0.06em;
+    }
+
+    .about-card p {
+      max-width: 50ch;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .stepper {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.018);
+    }
+
+    .step {
+      min-height: 130px;
+      padding: 22px 24px;
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 18px;
+      transition: background var(--ease);
+    }
+
+    .step + .step {
+      border-top: 1px solid var(--line);
+    }
+
+    .step:hover {
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .step-index {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: var(--acid-ink);
+      background: var(--acid);
+      font-size: 0.75rem;
+      font-weight: 840;
+    }
+
+    .step h4 {
+      margin-bottom: 5px;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .step p {
+      max-width: 58ch;
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .step-side {
+      color: var(--muted-2);
+      font-size: 0.72rem;
+      white-space: nowrap;
+    }
+
+    .contact-section {
+      padding: 124px 0 34px;
+    }
+
+    .contact-panel {
+      position: relative;
+      min-height: 440px;
+      padding: clamp(30px, 6vw, 68px);
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      border: 1px solid rgba(216, 255, 93, 0.22);
+      border-radius: var(--radius-xl);
+      color: var(--acid-ink);
+      background: var(--acid);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-panel::before {
+      content: "@pastabreaker007";
+      position: absolute;
+      top: 30px;
+      right: -18px;
+      color: rgba(17, 21, 10, 0.09);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      line-height: 0.9;
+      font-weight: 900;
+      letter-spacing: -0.075em;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .contact-content {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+    }
+
+    .contact-content .section-label {
+      color: rgba(17, 21, 10, 0.62);
+    }
+
+    .contact-content h2 {
+      max-width: 10ch;
+      margin-bottom: 18px;
+      color: var(--acid-ink);
+    }
+
+    .contact-content p {
+      max-width: 56ch;
+      margin-bottom: 24px;
+      color: rgba(17, 21, 10, 0.72);
+      font-size: 1.03rem;
+      line-height: 1.65;
+    }
+
+    .contact-panel .button {
+      color: var(--text);
+      background: #11140d;
+    }
+
+    .contact-panel .button:hover,
+    .contact-panel .button:focus-visible {
+      background: #1b2012;
+      box-shadow: 0 16px 42px rgba(17, 20, 13, 0.2);
+    }
+
+    .footer {
+      min-height: 124px;
+      padding: 30px 0 38px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      color: var(--muted-2);
+      font-size: 0.86rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 17px;
+    }
+
+    .footer-links a,
+    .footer-links button {
+      padding: 0;
+      border: 0;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+      transition: color var(--ease);
+    }
+
+    .footer-links a:hover,
+    .footer-links a:focus-visible,
+    .footer-links button:hover,
+    .footer-links button:focus-visible {
+      color: var(--text);
+      outline: none;
+    }
+
+    .contact-dialog {
+      width: min(calc(100% - 28px), 500px);
+      padding: 0;
+      overflow: visible;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 26px;
+      color: var(--text);
+      background: #101218;
+      box-shadow: 0 36px 110px rgba(0, 0, 0, 0.68);
+    }
+
+    .contact-dialog::backdrop {
+      background: rgba(4, 5, 7, 0.74);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .dialog-inner {
+      padding: 14px;
+    }
+
+    .dialog-head {
+      padding: 7px 7px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .dialog-head small {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--acid);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .dialog-head h3 {
+      font-size: 1.45rem;
+      letter-spacing: -0.035em;
+    }
+
+    .dialog-close {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: #d6d8de;
+      background: rgba(255, 255, 255, 0.035);
+      font-size: 1.15rem;
+      transition: background var(--ease), border-color var(--ease);
+    }
+
+    .dialog-close:hover,
+    .dialog-close:focus-visible {
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.07);
+      outline: none;
+    }
+
+    .discord-profile {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 19px;
+      background: #171a22;
+    }
+
+    .discord-banner {
+      height: 92px;
+      background:
+        radial-gradient(circle at 22% 110%, rgba(216, 255, 93, 0.58), transparent 30%),
+        linear-gradient(135deg, #4a61ff, #2bbcd1);
+    }
+
+    .discord-body {
+      position: relative;
+      padding: 58px 18px 18px;
+    }
+
+    .discord-avatar {
+      position: absolute;
+      top: -42px;
+      left: 18px;
+      width: 78px;
+      height: 78px;
+      overflow: hidden;
+      border: 6px solid #171a22;
+      border-radius: 50%;
+      background: #171a22;
+    }
+
+    .discord-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .discord-body h4 {
+      margin-bottom: 3px;
+      font-size: 1.2rem;
+      letter-spacing: -0.025em;
+    }
+
+    .discord-handle {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .discord-bio {
+      margin-top: 17px;
+      padding-top: 15px;
+      border-top: 1px solid var(--line);
+      color: #c7cad1;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .copy-row {
+      margin-top: 15px;
+      padding: 7px 7px 7px 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(0, 0, 0, 0.16);
+    }
+
+    .copy-row code {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #f1f2f4;
+      font-size: 0.88rem;
+    }
+
+    .copy-button {
+      min-width: 82px;
+      min-height: 38px;
+      padding: 0 12px;
+      border-radius: 9px;
+      color: var(--acid-ink);
+      background: var(--acid);
+      font-size: 0.8rem;
+      font-weight: 820;
+      transition: transform var(--ease), background var(--ease);
+    }
+
+    .copy-button:hover,
+    .copy-button:focus-visible {
+      transform: translateY(-1px);
+      background: #e5ff88;
+      outline: none;
+    }
+
+    .dialog-note {
+      padding: 12px 5px 4px;
+      color: var(--muted-2);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 400;
+      padding: 11px 14px;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      color: var(--text);
+      background: rgba(16, 18, 24, 0.94);
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.42);
+      backdrop-filter: blur(12px);
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--ease), transform var(--ease), visibility var(--ease);
+      font-size: 0.84rem;
+      pointer-events: none;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 680ms cubic-bezier(.2, .8, .2, 1), transform 680ms cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1080px) {
+      .hero-lower {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-intro {
+        padding-right: 0;
+      }
+
+      .hero-browser {
+        max-width: 820px;
+      }
+
+      .proof-row {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .proof-note {
+        grid-column: 1 / -1;
+        min-height: auto;
+        padding-inline: 0;
+      }
+
+      .proof-stat:first-of-type {
+        border-left: 0;
+      }
+
+      .project-card.large,
+      .project-card.medium {
+        grid-column: span 12;
+      }
+
+      .project-card.half {
+        grid-column: span 6;
+      }
+
+      .project-card.third {
+        grid-column: span 4;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .shell {
+        width: min(calc(100% - 24px), var(--max));
+      }
+
+      .site-header {
+        inset: 9px 0 auto;
+      }
+
+      .nav {
+        min-height: 58px;
+        grid-template-columns: auto 1fr auto;
+        border-radius: 16px;
+      }
+
+      .brand > span:last-child,
+      .nav-links {
+        display: none;
+      }
+
+      .brand-avatar {
+        width: 40px;
+        height: 40px;
+      }
+
+      .nav-contact {
+        min-height: 40px;
+      }
+
+      .hero {
+        padding-top: 108px;
+      }
+
+      .hero-topline {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .hero h1 {
+        max-width: none;
+        font-size: clamp(3.65rem, 17vw, 6.2rem);
+      }
+
+      .browser-grid {
+        min-height: 520px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1.25fr 0.75fr;
+      }
+
+      .browser-project:first-child {
+        grid-column: 1 / -1;
+        grid-row: auto;
+      }
+
+      .proof-row {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-stat {
+        min-height: 105px;
+        padding-inline: 0;
+        border-top: 1px solid var(--line);
+        border-left: 0;
+      }
+
+      .section {
+        padding-top: 96px;
+      }
+
+      .section-heading {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      h2 {
+        max-width: none;
+        font-size: clamp(2.7rem, 14vw, 4.8rem);
+      }
+
+      .work-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .filter-group {
+        justify-content: flex-start;
+      }
+
+      .project-card.large,
+      .project-card.medium,
+      .project-card.half,
+      .project-card.third {
+        grid-column: span 12;
+        min-height: 480px;
+      }
+
+      .project-card.third {
+        min-height: 420px;
+      }
+
+      .project-card.large .project-art,
+      .project-card.medium .project-art,
+      .project-card.half .project-art,
+      .project-card.third .project-art {
+        width: 220px;
+        top: 64px;
+        right: -10px;
+      }
+
+      .project-copy,
+      .project-card.third .project-copy {
+        padding-top: 160px;
+      }
+
+      .project-copy h3,
+      .project-card.third .project-copy h3 {
+        font-size: clamp(2.15rem, 11vw, 3.6rem);
+      }
+
+      .dictionary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dictionary-card {
+        min-height: 220px;
+      }
+
+      .dictionary-top {
+        margin-bottom: 38px;
+      }
+
+      .about-card {
+        min-height: 470px;
+      }
+
+      .step {
+        grid-template-columns: 42px minmax(0, 1fr);
+      }
+
+      .step-side {
+        display: none;
+      }
+
+      .contact-section {
+        padding-top: 96px;
+      }
+
+      .contact-panel {
+        min-height: 500px;
+        border-radius: 26px;
+      }
+
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .nav-contact .nav-contact-label {
+        display: none;
+      }
+
+      .nav-contact::after {
+        content: "Discord";
+      }
+
+      .hero-actions {
+        display: grid;
+      }
+
+      .hero-actions .button {
+        width: 100%;
+      }
+
+      .browser-bar {
+        grid-template-columns: auto 1fr;
+      }
+
+      .browser-count {
+        display: none;
+      }
+
+      .browser-grid {
+        min-height: 470px;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .browser-project-copy strong {
+        font-size: 0.9rem;
+      }
+
+      .browser-project:first-child .browser-project-copy strong {
+        font-size: 1.15rem;
+      }
+
+      .project-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      .project-card.large,
+      .project-card.medium,
+      .project-card.half,
+      .project-card.third {
+        min-height: 455px;
+      }
+
+      .project-card.large .project-art,
+      .project-card.medium .project-art,
+      .project-card.half .project-art,
+      .project-card.third .project-art {
+        width: 190px;
+        right: -14px;
+      }
+
+      .project-copy,
+      .project-card.third .project-copy {
+        padding-top: 155px;
+      }
+
+      .card-stat {
+        display: none;
+      }
+
+      .about-card {
+        padding: 24px;
+      }
+
+      .step {
+        min-height: 122px;
+        padding: 19px 16px;
+      }
+
+      .contact-panel::before {
+        font-size: 4rem;
+        right: -80px;
+      }
+
+      .copy-row {
+        align-items: stretch;
+        flex-direction: column;
+        padding: 10px;
+      }
+
+      .copy-row code {
+        padding: 5px 3px;
+      }
+
+      .copy-button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell">
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href="#home" aria-label="Pasta home">
+          <span class="brand-avatar"><img src="assets/pasta-avatar.jpeg" alt="" /></span>
+          <span>Pasta</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#work" data-nav="work">Work</a>
+          <a href="#skills" data-nav="skills">What I do</a>
+          <a href="#about" data-nav="about">About</a>
+        </div>
+
+        <button class="nav-contact contact-trigger" type="button">
+          <span aria-hidden="true">↗</span>
+          <span class="nav-contact-label">Discord</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero shell" id="home">
+      <div class="hero-topline">
+        <span class="availability"><span class="availability-dot" aria-hidden="true"></span>Minecraft Bedrock creator</span>
+        <span class="mono">addons / scripts / shaders / weird experiments</span>
+      </div>
+
+      <h1>
+        I build Bedrock stuff <span class="soft">from the first idea</span> <span class="accent">to the release.</span>
+      </h1>
+
+      <div class="hero-lower">
+        <div class="hero-intro">
+          <p>
+            I’m Pasta. Most of my projects start as a small idea, then turn into an addon, script, shader, UI experiment, or something harder to label. I bounce between design, scripting, visuals, and assets, then make sure the whole thing works for other players.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#work">See the projects <span aria-hidden="true">↓</span></a>
+            <button class="button button-secondary contact-trigger" type="button">Message me on Discord <span aria-hidden="true">↗</span></button>
+          </div>
+        </div>
+
+        <div class="hero-browser" aria-label="Featured project browser">
+          <div class="browser-bar">
+            <div class="browser-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="browser-field mono"><span aria-hidden="true">⌕</span><span>featured projects</span></div>
+            <span class="browser-count">20 projects</span>
+          </div>
+
+          <div class="browser-grid">
+            <a class="browser-project" href="https://www.curseforge.com/minecraft-bedrock/addons/some-sunny-day" target="_blank" rel="noreferrer">
+              <img src="assets/some-sunny-day.jpg" alt="Some.sunny.day project artwork" />
+              <span class="browser-project-copy"><small>Horror addon</small><strong>Some.sunny.day</strong></span>
+            </a>
+            <a class="browser-project" href="https://www.curseforge.com/minecraft-bedrock/texture-packs/pasta-shader" target="_blank" rel="noreferrer">
+              <img src="assets/pasta-shaders.png" alt="Pasta Shaders project artwork" />
+              <span class="browser-project-copy"><small>Visual pack</small><strong>Pasta Shaders</strong></span>
+            </a>
+            <a class="browser-project" href="https://www.curseforge.com/minecraft-bedrock/scripts/easychestshop" target="_blank" rel="noreferrer">
+              <img src="assets/easychestshop.png" alt="EasyChestShop project artwork" />
+              <span class="browser-project-copy"><small>Server script</small><strong>EasyChestShop</strong></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof-strip shell reveal" aria-label="Creator statistics">
+      <div class="proof-row">
+        <div class="proof-note">
+          I publish the things I make. The numbers here come from my public CurseForge projects, not private prototypes.
+        </div>
+        <div class="proof-stat">
+          <strong>500K+</strong>
+          <span>downloads across my projects</span>
+        </div>
+        <div class="proof-stat">
+          <strong>20</strong>
+          <span>published projects</span>
+        </div>
+        <div class="proof-stat">
+          <strong>100K</strong>
+          <span>downloads on Pasta Shaders</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="work">
+      <div class="section-heading reveal">
+        <div>
+          <div class="section-label">Selected work</div>
+          <h2>A few things I’ve shipped.</h2>
+        </div>
+        <p>
+          These are the projects I would show first. Some are practical server tools, some are visual packs, and some exist because making Minecraft feel slightly wrong is fun.
+        </p>
+      </div>
+
+      <div class="work-toolbar reveal">
+        <span class="work-toolbar-title mono">filter projects</span>
+        <div class="filter-group" role="group" aria-label="Filter projects">
+          <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-button" type="button" data-filter="visual">Visual</button>
+          <button class="filter-button" type="button" data-filter="system">Systems</button>
+          <button class="filter-button" type="button" data-filter="horror">Horror</button>
+        </div>
+      </div>
+
+      <div class="project-grid" id="projectGrid">
+        <article class="project-card large paper reveal" data-category="visual">
+          <div class="card-top">
+            <span class="card-kind">Shader pack</span>
+            <span class="card-stat">100K downloads</span>
+          </div>
+          <img class="project-art" src="assets/pasta-shaders.png" alt="Pasta Shaders project artwork" />
+          <div class="project-copy">
+            <h3>Pasta Shaders</h3>
+            <p>
+              A color-heavy shader pack for Bedrock. I wanted the world to feel warmer and more alive without making everything harder to read.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Shaders</span>
+              <span class="project-tag">Color</span>
+              <span class="project-tag">Atmosphere</span>
+            </div>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/texture-packs/pasta-shader" target="_blank" rel="noreferrer">Open on CurseForge</a>
+          </div>
+        </article>
+
+        <article class="project-card medium sunny reveal" data-category="horror">
+          <div class="card-top">
+            <span class="card-kind">Horror addon</span>
+            <span class="card-stat">240K+ downloads</span>
+          </div>
+          <img class="project-art" src="assets/some-sunny-day.jpg" alt="Some.sunny.day project artwork" />
+          <div class="project-copy">
+            <h3>Some.sunny.day</h3>
+            <p>
+              A horror addon built around making normal Minecraft feel wrong in small ways. It grew into my biggest release and the project people seem to know me for most.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Horror</span>
+              <span class="project-tag">Survival</span>
+              <span class="project-tag">Mobs</span>
+            </div>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/some-sunny-day" target="_blank" rel="noreferrer">Open on CurseForge</a>
+          </div>
+        </article>
+
+        <article class="project-card half reveal" data-category="system">
+          <div class="card-top">
+            <span class="card-kind">Server script</span>
+            <span class="card-stat">20K+ downloads</span>
+          </div>
+          <img class="project-art" src="assets/easychestshop.png" alt="EasyChestShop project artwork" />
+          <div class="project-copy">
+            <h3>EasyChestShop</h3>
+            <p>
+              A chest shop system for Bedrock servers. The point is simple: set up a shop quickly, make the interaction obvious, and stay out of the player’s way.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Economy</span>
+              <span class="project-tag">Script</span>
+              <span class="project-tag">Server utility</span>
+            </div>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/scripts/easychestshop" target="_blank" rel="noreferrer">Open on CurseForge</a>
+          </div>
+        </article>
+
+        <article class="project-card half faction reveal" data-category="system">
+          <div class="card-top">
+            <span class="card-kind">Multiplayer addon</span>
+            <span class="card-stat">5K+ downloads</span>
+          </div>
+          <img class="project-art" src="assets/elitefaction.png" alt="EliteFaction project artwork" />
+          <div class="project-copy">
+            <h3>EliteFaction</h3>
+            <p>
+              My take on factions for Bedrock. It brings claims, PvP, progression, economy, diplomacy, and admin tools into one addon made for multiplayer servers.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">PvP</span>
+              <span class="project-tag">Claims</span>
+              <span class="project-tag">Progression</span>
+            </div>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/elitefaction" target="_blank" rel="noreferrer">Open on CurseForge</a>
+          </div>
+        </article>
+
+        <article class="project-card third reveal" data-category="system">
+          <div class="card-top">
+            <span class="card-kind">Progression script</span>
+          </div>
+          <img class="project-art" src="assets/jobsplus.png" alt="Jobs+ project artwork" />
+          <div class="project-copy">
+            <h3>Jobs+</h3>
+            <p>A simple jobs system for servers that want player roles and repeatable progression without turning the whole game into a spreadsheet.</p>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/scripts/jobsplus" target="_blank" rel="noreferrer">Open on CurseForge</a>
+          </div>
+        </article>
+
+        <article class="project-card third sunny reveal" data-category="horror">
+          <div class="card-top">
+            <span class="card-kind">Horror addon</span>
+          </div>
+          <img class="project-art" src="assets/paradise.png" alt="Paradise.exe project artwork" />
+          <div class="project-copy">
+            <h3>Paradise.exe</h3>
+            <p>A stranger, less stable version of survival Minecraft. The fun part is never being completely sure what the world is about to do.</p>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/paradise-exe" target="_blank" rel="noreferrer">Open on CurseForge</a>
+          </div>
+        </article>
+
+        <article class="project-card third vhs reveal" data-category="visual">
+          <div class="card-top">
+            <span class="card-kind">Visual pack</span>
+          </div>
+          <img class="project-art" src="assets/vhs-filter.jpg" alt="VHS filter project artwork" />
+          <div class="project-copy">
+            <h3>VHS filter</h3>
+            <p>A VHS-style screen effect for Bedrock, mostly made for horror packs that need the footage to feel older and rougher.</p>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/texture-packs/vhs-filter" target="_blank" rel="noreferrer">Open on CurseForge</a>
+          </div>
+        </article>
+      </div>
+
+      <a class="all-projects-link reveal" href="https://www.curseforge.com/members/pastahimself/projects" target="_blank" rel="noreferrer">
+        <span><strong>There’s more on CurseForge.</strong> This page only keeps the projects I want near the top.</span>
+        <span aria-hidden="true">View all ↗</span>
+      </a>
+    </section>
+
+    <section class="section shell" id="skills">
+      <div class="section-heading reveal">
+        <div>
+          <div class="section-label">What I do</div>
+          <h2>The parts I usually end up touching.</h2>
+        </div>
+        <p>
+          I rarely work on one isolated piece. The code, UI, models, textures, and presentation usually need to make sense together, so I move between them as the project needs it.
+        </p>
+      </div>
+
+      <div class="dictionary-grid reveal">
+        <article class="dictionary-card">
+          <div class="dictionary-top">
+            <span class="dictionary-token mono">01 / logic</span>
+            <span class="dictionary-pill">Script API</span>
+          </div>
+          <h3>Scripting</h3>
+          <p>Gameplay systems, utilities, progression, interfaces, server features, and the logic that keeps the project working once real players get involved.</p>
+        </article>
+
+        <article class="dictionary-card">
+          <div class="dictionary-top">
+            <span class="dictionary-token mono">02 / look</span>
+            <span class="dictionary-pill">Shaders + textures</span>
+          </div>
+          <h3>Visuals</h3>
+          <p>Shaders, textures, HUDs, color work, and the small visual decisions that stop a project from feeling like a pile of unrelated assets.</p>
+        </article>
+
+        <article class="dictionary-card">
+          <div class="dictionary-top">
+            <span class="dictionary-token mono">03 / assets</span>
+            <span class="dictionary-pill">Blockbench</span>
+          </div>
+          <h3>Models and assets</h3>
+          <p>Blockbench models, textures, icons, and supporting assets when the idea needs more than code to make sense in game.</p>
+        </article>
+
+        <article class="dictionary-card">
+          <div class="dictionary-top">
+            <span class="dictionary-token mono">04 / release</span>
+            <span class="dictionary-pill">Testing + packaging</span>
+          </div>
+          <h3>Finishing the thing</h3>
+          <p>Testing, fixing rough edges, packaging files, making screenshots, and getting the project into a state where somebody else can install it without needing me there.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section shell" id="about">
+      <div class="section-heading reveal">
+        <div>
+          <div class="section-label">About</div>
+          <h2>Most ideas start with “could this work?”</h2>
+        </div>
+        <p>
+          I like the part where a rough idea stops being hypothetical. That usually means a lot of testing, changing my mind, rebuilding pieces, and eventually getting something into players’ hands.
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <article class="about-card reveal">
+          <span class="profile-chip"><img src="assets/pasta-avatar.jpeg" alt="" /> Pasta / Pastahimself</span>
+          <div>
+            <h3>I make Bedrock addons.</h3>
+            <p>
+              Some are useful, some are weird, and some are both. I care about what the project feels like once another player is using it, not just whether the feature technically works.
+            </p>
+          </div>
+        </article>
+
+        <div class="stepper reveal" aria-label="How I work">
+          <article class="step">
+            <span class="step-index">01</span>
+            <div><h4>Start with the interesting part</h4><p>Figure out what is worth building before I spend time decorating the idea.</p></div>
+            <span class="step-side mono">idea</span>
+          </article>
+          <article class="step">
+            <span class="step-index">02</span>
+            <div><h4>Get a rough version working</h4><p>Build enough of the system to see what feels good, what is awkward, and what needs to change.</p></div>
+            <span class="step-side mono">prototype</span>
+          </article>
+          <article class="step">
+            <span class="step-index">03</span>
+            <div><h4>Make the pieces agree</h4><p>Bring the visuals, UI, assets, feedback, and mechanics into the same language.</p></div>
+            <span class="step-side mono">polish</span>
+          </article>
+          <article class="step">
+            <span class="step-index">04</span>
+            <div><h4>Put it in front of players</h4><p>Test the release, fix the annoying parts, package it, and publish it.</p></div>
+            <span class="step-side mono">ship</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section shell" id="contact">
+      <div class="contact-panel reveal">
+        <div class="contact-content">
+          <div class="section-label">Contact</div>
+          <h2>Want to build something?</h2>
+          <p>
+            If you have a Bedrock project, commission, collaboration, or studio role in mind, send me a message on Discord. That is the easiest place to reach me.
+          </p>
+          <button class="button contact-trigger" type="button">Open my Discord card <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <span>© 2026 Pasta. Minecraft Bedrock creator.</span>
+    <div class="footer-links">
+      <a href="https://www.curseforge.com/members/pastahimself/projects" target="_blank" rel="noreferrer">CurseForge ↗</a>
+      <button class="contact-trigger" type="button">Discord</button>
+      <a href="#home">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <dialog class="contact-dialog" id="contactDialog" aria-labelledby="contactDialogTitle">
+    <div class="dialog-inner">
+      <div class="dialog-head">
+        <div>
+          <small>Discord</small>
+          <h3 id="contactDialogTitle">Message Pasta</h3>
+        </div>
+        <button class="dialog-close" type="button" aria-label="Close contact card">×</button>
+      </div>
+
+      <div class="discord-profile">
+        <div class="discord-banner" aria-hidden="true"></div>
+        <div class="discord-body">
+          <div class="discord-avatar"><img src="assets/pasta-avatar.jpeg" alt="" /></div>
+          <h4>Pasta_BreakerX</h4>
+          <div class="discord-handle">pastabreaker007</div>
+          <p class="discord-bio">I make Minecraft Bedrock addons. Everything is possible!</p>
+          <div class="copy-row">
+            <code id="discordUsername">pastabreaker007</code>
+            <button class="copy-button" type="button">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="dialog-note">Copy the username, open Discord, and send me a message there.</p>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied pastabreaker007</div>
+
+  <script>
+    (() => {
+      const dialog = document.getElementById('contactDialog');
+      const contactTriggers = document.querySelectorAll('.contact-trigger');
+      const closeButton = dialog.querySelector('.dialog-close');
+      const copyButton = dialog.querySelector('.copy-button');
+      const username = document.getElementById('discordUsername');
+      const toast = document.getElementById('toast');
+      let toastTimer = null;
+
+      const openContact = () => {
+        if (typeof dialog.showModal === 'function') {
+          dialog.showModal();
+          closeButton.focus();
+        }
+      };
+
+      const closeContact = () => {
+        if (dialog.open) dialog.close();
+      };
+
+      contactTriggers.forEach((button) => button.addEventListener('click', openContact));
+      closeButton.addEventListener('click', closeContact);
+
+      dialog.addEventListener('click', (event) => {
+        const rect = dialog.getBoundingClientRect();
+        const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+        if (!inside) closeContact();
+      });
+
+      const fallbackCopy = (text) => {
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        const copied = document.execCommand('copy');
+        area.remove();
+        return copied;
+      };
+
+      const showToast = (message) => {
+        toast.textContent = message;
+        toast.classList.add('is-visible');
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2200);
+      };
+
+      copyButton.addEventListener('click', async () => {
+        const text = username.textContent.trim();
+        let copied = false;
+
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            copied = true;
+          } else {
+            copied = fallbackCopy(text);
+          }
+        } catch (error) {
+          copied = fallbackCopy(text);
+        }
+
+        if (copied) {
+          copyButton.textContent = 'Copied';
+          showToast('Copied pastabreaker007');
+          window.setTimeout(() => { copyButton.textContent = 'Copy'; }, 1800);
+        } else {
+          showToast('Copy failed. Select the username manually.');
+        }
+      });
+
+      const filterButtons = Array.from(document.querySelectorAll('.filter-button'));
+      const projectCards = Array.from(document.querySelectorAll('.project-card'));
+
+      filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const filter = button.dataset.filter;
+          filterButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+          projectCards.forEach((card) => {
+            const visible = filter === 'all' || card.dataset.category === filter;
+            card.classList.toggle('is-hidden', !visible);
+          });
+        });
+      });
+
+      projectCards.forEach((card) => {
+        card.addEventListener('pointermove', (event) => {
+          const rect = card.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width) * 100;
+          const y = ((event.clientY - rect.top) / rect.height) * 100;
+          card.style.setProperty('--mx', `${x.toFixed(1)}%`);
+          card.style.setProperty('--my', `${y.toFixed(1)}%`);
+        });
+      });
+
+      const revealItems = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -4% 0px' });
+        revealItems.forEach((item) => revealObserver.observe(item));
+      } else {
+        revealItems.forEach((item) => item.classList.add('in-view'));
+      }
+
+      const navLinks = Array.from(document.querySelectorAll('[data-nav]'));
+      const sections = navLinks.map((link) => document.getElementById(link.dataset.nav)).filter(Boolean);
+
+      if ('IntersectionObserver' in window && sections.length) {
+        const navObserver = new IntersectionObserver((entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!visible) return;
+          navLinks.forEach((link) => link.classList.toggle('is-active', link.dataset.nav === visible.target.id));
+        }, { rootMargin: '-25% 0px -60% 0px', threshold: [0.05, 0.2, 0.4] });
+        sections.forEach((section) => navObserver.observe(section));
+      }
+    })();
+  </script>
+</body>
+</html>
