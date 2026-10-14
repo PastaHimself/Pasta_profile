@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Pasta builds Minecraft Bedrock addons, scripts, shaders, UI experiments, and other projects from idea to release." />
-  <meta name="theme-color" content="#0b0c0e" />
-  <title>Pasta | Minecraft Bedrock Creator</title>
+  <meta name="description" content="Pasta builds Minecraft Bedrock addons, scripts, shaders, UI packs, and custom projects." />
+  <meta name="theme-color" content="#09090b" />
+  <title>Pasta — Minecraft Bedrock Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -21,11 +24,13 @@
           <a href="#work" data-nav="work">Work</a>
           <a href="#skills" data-nav="skills">What I do</a>
           <a href="#about" data-nav="about">About</a>
+          <a href="#contact" data-nav="contact">Contact</a>
         </div>
 
         <button class="nav-contact contact-trigger" type="button">
-          <span aria-hidden="true">↗</span>
+          <span class="nav-contact-dot" aria-hidden="true"></span>
           <span class="nav-contact-label">Discord</span>
+          <span aria-hidden="true">↗</span>
         </button>
       </nav>
     </div>
@@ -34,45 +39,45 @@
   <main>
     <section class="hero shell" id="home">
       <div class="hero-topline">
-        <span class="availability"><span class="availability-dot" aria-hidden="true"></span>Minecraft Bedrock creator</span>
-        <span class="mono">addons / scripts / shaders / weird experiments</span>
+        <span class="availability"><span class="availability-dot" aria-hidden="true"></span>Minecraft Bedrock Creator</span>
+        <span class="mono">addons · scripts · shaders · models</span>
       </div>
 
       <h1>
-        I build Bedrock stuff <span class="soft">from the first idea</span> <span class="accent">to the release.</span>
+        Making Bedrock <span class="soft">addons, scripts,</span> <span class="accent">and shaders.</span>
       </h1>
 
       <div class="hero-lower">
         <div class="hero-intro">
           <p>
-            I’m Pasta. Most of my projects start as a small idea, then turn into an addon, script, shader, UI experiment, or something harder to label. I bounce between design, scripting, visuals, and assets, then make sure the whole thing works for other players.
+            I’m Pasta. Most of what I make starts as a small "what if" idea and turns into a Bedrock addon, server script, shader, or custom UI. I write the logic, build the models in Blockbench, and polish the visuals until the whole pack actually feels good to play.
           </p>
 
           <div class="hero-actions">
-            <a class="button button-primary" href="#work">See the projects <span aria-hidden="true">↓</span></a>
-            <button class="button button-secondary contact-trigger" type="button">Message me on Discord <span aria-hidden="true">↗</span></button>
+            <a class="button button-primary" href="#work">Browse projects <span aria-hidden="true">↓</span></a>
+            <button class="button button-secondary contact-trigger" type="button">Reach out on Discord <span aria-hidden="true">↗</span></button>
           </div>
         </div>
 
-        <div class="hero-browser" aria-label="Featured project browser">
+        <div class="hero-browser" aria-label="Featured project showcase">
           <div class="browser-bar">
             <div class="browser-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-            <div class="browser-field mono"><span aria-hidden="true">⌕</span><span>featured projects</span></div>
-            <span class="browser-count">20 projects</span>
+            <div class="browser-field mono"><span aria-hidden="true">/</span><span>featured-releases</span></div>
+            <span class="browser-count mono">20 shipped</span>
           </div>
 
           <div class="browser-grid">
             <a class="browser-project" href="https://www.curseforge.com/minecraft-bedrock/addons/some-sunny-day" target="_blank" rel="noreferrer">
               <img src="assets/some-sunny-day.jpg" alt="Some.sunny.day project artwork" />
-              <span class="browser-project-copy"><small>Horror addon</small><strong>Some.sunny.day</strong></span>
+              <span class="browser-project-copy"><small>Horror addon · 240K+</small><strong>Some.sunny.day</strong></span>
             </a>
             <a class="browser-project" href="https://www.curseforge.com/minecraft-bedrock/texture-packs/pasta-shader" target="_blank" rel="noreferrer">
               <img src="assets/pasta-shaders.png" alt="Pasta Shaders project artwork" />
-              <span class="browser-project-copy"><small>Visual pack</small><strong>Pasta Shaders</strong></span>
+              <span class="browser-project-copy"><small>Visual pack · 100K</small><strong>Pasta Shaders</strong></span>
             </a>
             <a class="browser-project" href="https://www.curseforge.com/minecraft-bedrock/scripts/easychestshop" target="_blank" rel="noreferrer">
               <img src="assets/easychestshop.png" alt="EasyChestShop project artwork" />
-              <span class="browser-project-copy"><small>Server script</small><strong>EasyChestShop</strong></span>
+              <span class="browser-project-copy"><small>Server script · 20K+</small><strong>EasyChestShop</strong></span>
             </a>
           </div>
         </div>
@@ -82,19 +87,19 @@
     <section class="proof-strip shell reveal" aria-label="Creator statistics">
       <div class="proof-row">
         <div class="proof-note">
-          I publish the things I make. The numbers here come from my public CurseForge projects, not private prototypes.
+          Everything listed here is live and playable. These numbers come straight from my public CurseForge releases.
         </div>
         <div class="proof-stat">
           <strong>500K+</strong>
-          <span>downloads across my projects</span>
+          <span>total downloads across all packs</span>
         </div>
         <div class="proof-stat">
           <strong>20</strong>
-          <span>published projects</span>
+          <span>public addons, scripts & packs</span>
         </div>
         <div class="proof-stat">
-          <strong>100K</strong>
-          <span>downloads on Pasta Shaders</span>
+          <strong>240K+</strong>
+          <span>downloads on Some.sunny.day</span>
         </div>
       </div>
     </section>
@@ -102,156 +107,170 @@
     <section class="section shell" id="work">
       <div class="section-heading reveal">
         <div>
-          <div class="section-label">Selected work</div>
-          <h2>A few things I’ve shipped.</h2>
+          <div class="section-label mono">01 / Selected work</div>
+          <h2>Projects I’ve shipped.</h2>
         </div>
         <p>
-          These are the projects I would show first. Some are practical server tools, some are visual packs, and some exist because making Minecraft feel slightly wrong is fun.
+          A mix of practical multiplayer tools, visual overhauls, and horror addons that make normal survival Minecraft feel slightly off.
         </p>
       </div>
 
       <div class="work-toolbar reveal">
-        <span class="work-toolbar-title mono">filter projects</span>
+        <span class="work-toolbar-title mono">Filter by category</span>
         <div class="filter-group" role="group" aria-label="Filter projects">
           <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
-          <button class="filter-button" type="button" data-filter="visual">Visual</button>
-          <button class="filter-button" type="button" data-filter="system">Systems</button>
-          <button class="filter-button" type="button" data-filter="horror">Horror</button>
+          <button class="filter-button" type="button" data-filter="visual" aria-pressed="false">Visual</button>
+          <button class="filter-button" type="button" data-filter="system" aria-pressed="false">Systems</button>
+          <button class="filter-button" type="button" data-filter="horror" aria-pressed="false">Horror</button>
         </div>
       </div>
 
       <div class="project-grid" id="projectGrid">
-        <article class="project-card large paper reveal" data-category="visual">
-          <div class="card-top">
-            <span class="card-kind">Shader pack</span>
-            <span class="card-stat">100K downloads</span>
+        <article class="project-card large reveal" data-category="visual">
+          <div class="project-media">
+            <img class="project-art" src="assets/pasta-shaders.png" alt="Pasta Shaders project artwork" loading="lazy" />
           </div>
-          <img class="project-art" src="assets/pasta-shaders.png" alt="Pasta Shaders project artwork" />
+          <div class="card-top">
+            <span class="card-kind mono">Shader pack</span>
+            <span class="card-stat mono">100K downloads</span>
+          </div>
           <div class="project-copy">
             <h3>Pasta Shaders</h3>
             <p>
-              A color-heavy shader pack for Bedrock. I wanted the world to feel warmer and more alive without making everything harder to read.
+              A vibrant shader pack for Bedrock built to make the world feel warmer and more atmospheric without hurting visibility during normal survival play.
             </p>
             <div class="project-tags">
               <span class="project-tag">Shaders</span>
-              <span class="project-tag">Color</span>
+              <span class="project-tag">Lighting</span>
               <span class="project-tag">Atmosphere</span>
             </div>
-            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/texture-packs/pasta-shader" target="_blank" rel="noreferrer">Open on CurseForge</a>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/texture-packs/pasta-shader" target="_blank" rel="noreferrer">View on CurseForge</a>
           </div>
         </article>
 
-        <article class="project-card medium sunny reveal" data-category="horror">
-          <div class="card-top">
-            <span class="card-kind">Horror addon</span>
-            <span class="card-stat">240K+ downloads</span>
+        <article class="project-card medium reveal" data-category="horror">
+          <div class="project-media">
+            <img class="project-art" src="assets/some-sunny-day.jpg" alt="Some.sunny.day project artwork" loading="lazy" />
           </div>
-          <img class="project-art" src="assets/some-sunny-day.jpg" alt="Some.sunny.day project artwork" />
+          <div class="card-top">
+            <span class="card-kind mono">Horror addon</span>
+            <span class="card-stat mono">240K+ downloads</span>
+          </div>
           <div class="project-copy">
             <h3>Some.sunny.day</h3>
             <p>
-              A horror addon built around making normal Minecraft feel wrong in small ways. It grew into my biggest release and the project people seem to know me for most.
+              A slow-burn horror addon that messes with normal survival in subtle ways. What started as an experiment turned into my most downloaded release.
             </p>
             <div class="project-tags">
               <span class="project-tag">Horror</span>
               <span class="project-tag">Survival</span>
-              <span class="project-tag">Mobs</span>
+              <span class="project-tag">Custom Mobs</span>
             </div>
-            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/some-sunny-day" target="_blank" rel="noreferrer">Open on CurseForge</a>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/some-sunny-day" target="_blank" rel="noreferrer">View on CurseForge</a>
           </div>
         </article>
 
         <article class="project-card half reveal" data-category="system">
-          <div class="card-top">
-            <span class="card-kind">Server script</span>
-            <span class="card-stat">20K+ downloads</span>
+          <div class="project-media">
+            <img class="project-art" src="assets/easychestshop.png" alt="EasyChestShop project artwork" loading="lazy" />
           </div>
-          <img class="project-art" src="assets/easychestshop.png" alt="EasyChestShop project artwork" />
+          <div class="card-top">
+            <span class="card-kind mono">Server script</span>
+            <span class="card-stat mono">20K+ downloads</span>
+          </div>
           <div class="project-copy">
             <h3>EasyChestShop</h3>
             <p>
-              A chest shop system for Bedrock servers. The point is simple: set up a shop quickly, make the interaction obvious, and stay out of the player’s way.
+              A clean chest shop script for multiplayer servers. Players can set up shops in seconds and trade items without dealing with clunky commands.
             </p>
             <div class="project-tags">
               <span class="project-tag">Economy</span>
-              <span class="project-tag">Script</span>
-              <span class="project-tag">Server utility</span>
+              <span class="project-tag">Script API</span>
+              <span class="project-tag">Multiplayer</span>
             </div>
-            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/scripts/easychestshop" target="_blank" rel="noreferrer">Open on CurseForge</a>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/scripts/easychestshop" target="_blank" rel="noreferrer">View on CurseForge</a>
           </div>
         </article>
 
-        <article class="project-card half faction reveal" data-category="system">
-          <div class="card-top">
-            <span class="card-kind">Multiplayer addon</span>
-            <span class="card-stat">5K+ downloads</span>
+        <article class="project-card half reveal" data-category="system">
+          <div class="project-media">
+            <img class="project-art" src="assets/elitefaction.png" alt="EliteFaction project artwork" loading="lazy" />
           </div>
-          <img class="project-art" src="assets/elitefaction.png" alt="EliteFaction project artwork" />
+          <div class="card-top">
+            <span class="card-kind mono">Multiplayer addon</span>
+            <span class="card-stat mono">5K+ downloads</span>
+          </div>
           <div class="project-copy">
             <h3>EliteFaction</h3>
             <p>
-              My take on factions for Bedrock. It brings claims, PvP, progression, economy, diplomacy, and admin tools into one addon made for multiplayer servers.
+              A full factions setup for Bedrock realms and servers. Handles chunk claiming, team diplomacy, player progression, economy, and admin moderation in one pack.
             </p>
             <div class="project-tags">
-              <span class="project-tag">PvP</span>
+              <span class="project-tag">Factions</span>
               <span class="project-tag">Claims</span>
-              <span class="project-tag">Progression</span>
+              <span class="project-tag">PvP</span>
             </div>
-            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/elitefaction" target="_blank" rel="noreferrer">Open on CurseForge</a>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/elitefaction" target="_blank" rel="noreferrer">View on CurseForge</a>
           </div>
         </article>
 
         <article class="project-card third reveal" data-category="system">
-          <div class="card-top">
-            <span class="card-kind">Progression script</span>
+          <div class="project-media">
+            <img class="project-art" src="assets/jobsplus.png" alt="Jobs+ project artwork" loading="lazy" />
           </div>
-          <img class="project-art" src="assets/jobsplus.png" alt="Jobs+ project artwork" />
+          <div class="card-top">
+            <span class="card-kind mono">Progression script</span>
+          </div>
           <div class="project-copy">
             <h3>Jobs+</h3>
-            <p>A simple jobs system for servers that want player roles and repeatable progression without turning the whole game into a spreadsheet.</p>
-            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/scripts/jobsplus" target="_blank" rel="noreferrer">Open on CurseForge</a>
+            <p>Gives server players clear roles and steady income progression without buried menus or overly complicated setups.</p>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/scripts/jobsplus" target="_blank" rel="noreferrer">View on CurseForge</a>
           </div>
         </article>
 
-        <article class="project-card third sunny reveal" data-category="horror">
-          <div class="card-top">
-            <span class="card-kind">Horror addon</span>
+        <article class="project-card third reveal" data-category="horror">
+          <div class="project-media">
+            <img class="project-art" src="assets/paradise.png" alt="Paradise.exe project artwork" loading="lazy" />
           </div>
-          <img class="project-art" src="assets/paradise.png" alt="Paradise.exe project artwork" />
+          <div class="card-top">
+            <span class="card-kind mono">Horror addon</span>
+          </div>
           <div class="project-copy">
             <h3>Paradise.exe</h3>
-            <p>A stranger, less stable version of survival Minecraft. The fun part is never being completely sure what the world is about to do.</p>
-            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/paradise-exe" target="_blank" rel="noreferrer">Open on CurseForge</a>
+            <p>An unstable, unpredictable take on survival Minecraft where the world doesn’t play by normal rules.</p>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/addons/paradise-exe" target="_blank" rel="noreferrer">View on CurseForge</a>
           </div>
         </article>
 
-        <article class="project-card third vhs reveal" data-category="visual">
-          <div class="card-top">
-            <span class="card-kind">Visual pack</span>
+        <article class="project-card third reveal" data-category="visual">
+          <div class="project-media">
+            <img class="project-art" src="assets/vhs-filter.jpg" alt="VHS filter project artwork" loading="lazy" />
           </div>
-          <img class="project-art" src="assets/vhs-filter.jpg" alt="VHS filter project artwork" />
+          <div class="card-top">
+            <span class="card-kind mono">Visual pack</span>
+          </div>
           <div class="project-copy">
-            <h3>VHS filter</h3>
-            <p>A VHS-style screen effect for Bedrock, mostly made for horror packs that need the footage to feel older and rougher.</p>
-            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/texture-packs/vhs-filter" target="_blank" rel="noreferrer">Open on CurseForge</a>
+            <h3>VHS Filter</h3>
+            <p>A analog tape overlay for Bedrock, built to give horror packs and found-footage worlds a rougher, retro look.</p>
+            <a class="project-link" href="https://www.curseforge.com/minecraft-bedrock/texture-packs/vhs-filter" target="_blank" rel="noreferrer">View on CurseForge</a>
           </div>
         </article>
       </div>
 
       <a class="all-projects-link reveal" href="https://www.curseforge.com/members/pastahimself/projects" target="_blank" rel="noreferrer">
-        <span><strong>There’s more on CurseForge.</strong> This page only keeps the projects I want near the top.</span>
-        <span aria-hidden="true">View all ↗</span>
+        <span><strong>Looking for the rest?</strong> All 20+ packs and updates are up on my CurseForge profile.</span>
+        <span class="mono" aria-hidden="true">All projects ↗</span>
       </a>
     </section>
 
     <section class="section shell" id="skills">
       <div class="section-heading reveal">
         <div>
-          <div class="section-label">What I do</div>
-          <h2>The parts I usually end up touching.</h2>
+          <div class="section-label mono">02 / What I do</div>
+          <h2>How I put packs together.</h2>
         </div>
         <p>
-          I rarely work on one isolated piece. The code, UI, models, textures, and presentation usually need to make sense together, so I move between them as the project needs it.
+          A good addon needs the code, models, and UI to feel like they belong in the same game. I usually handle every part of the stack myself.
         </p>
       </div>
 
@@ -259,37 +278,37 @@
         <article class="dictionary-card">
           <div class="dictionary-top">
             <span class="dictionary-token mono">01 / logic</span>
-            <span class="dictionary-pill">Script API</span>
+            <span class="dictionary-pill mono">@minecraft/server</span>
           </div>
-          <h3>Scripting</h3>
-          <p>Gameplay systems, utilities, progression, interfaces, server features, and the logic that keeps the project working once real players get involved.</p>
+          <h3>Scripting & mechanics</h3>
+          <p>Writing custom gameplay loops, server utilities, economy systems, and custom mob behaviors that hold up on live multiplayer servers.</p>
         </article>
 
         <article class="dictionary-card">
           <div class="dictionary-top">
-            <span class="dictionary-token mono">02 / look</span>
-            <span class="dictionary-pill">Shaders + textures</span>
+            <span class="dictionary-token mono">02 / visuals</span>
+            <span class="dictionary-pill mono">Shaders & JSON UI</span>
           </div>
-          <h3>Visuals</h3>
-          <p>Shaders, textures, HUDs, color work, and the small visual decisions that stop a project from feeling like a pile of unrelated assets.</p>
+          <h3>Visuals & interfaces</h3>
+          <p>Designing custom HUDs, JSON UI menus, shaders, and color palettes so menus and effects look clean and intentional.</p>
         </article>
 
         <article class="dictionary-card">
           <div class="dictionary-top">
-            <span class="dictionary-token mono">03 / assets</span>
-            <span class="dictionary-pill">Blockbench</span>
+            <span class="dictionary-token mono">03 / 3D & art</span>
+            <span class="dictionary-pill mono">Blockbench</span>
           </div>
-          <h3>Models and assets</h3>
-          <p>Blockbench models, textures, icons, and supporting assets when the idea needs more than code to make sense in game.</p>
+          <h3>Models & animations</h3>
+          <p>Modeling entities, custom items, animations, and pixel textures in Blockbench when an idea needs custom art to work.</p>
         </article>
 
         <article class="dictionary-card">
           <div class="dictionary-top">
             <span class="dictionary-token mono">04 / release</span>
-            <span class="dictionary-pill">Testing + packaging</span>
+            <span class="dictionary-pill mono">Regolith & testing</span>
           </div>
-          <h3>Finishing the thing</h3>
-          <p>Testing, fixing rough edges, packaging files, making screenshots, and getting the project into a state where somebody else can install it without needing me there.</p>
+          <h3>Playtesting & shipping</h3>
+          <p>Tracking down edge-case bugs, optimizing performance, and packaging clean `.mcaddon` and `.mcpack` files ready for players to drop in.</p>
         </article>
       </div>
     </section>
@@ -297,45 +316,45 @@
     <section class="section shell" id="about">
       <div class="section-heading reveal">
         <div>
-          <div class="section-label">About</div>
-          <h2>Most ideas start with “could this work?”</h2>
+          <div class="section-label mono">03 / Workflow</div>
+          <h2>From rough test to public release.</h2>
         </div>
         <p>
-          I like the part where a rough idea stops being hypothetical. That usually means a lot of testing, changing my mind, rebuilding pieces, and eventually getting something into players’ hands.
+          I like taking weird ideas and figuring out how to actually build them inside Bedrock’s limits—testing, breaking things, and refining until it plays smoothly.
         </p>
       </div>
 
       <div class="about-grid">
         <article class="about-card reveal">
-          <span class="profile-chip"><img src="assets/pasta-avatar.jpeg" alt="" /> Pasta / Pastahimself</span>
+          <span class="profile-chip"><img src="assets/pasta-avatar.jpeg" alt="" /> Pasta · @PastaHimself</span>
           <div>
-            <h3>I make Bedrock addons.</h3>
+            <h3>Built for actual players.</h3>
             <p>
-              Some are useful, some are weird, and some are both. I care about what the project feels like once another player is using it, not just whether the feature technically works.
+              Whether it’s a server utility or a horror pack, I care most about how it feels in-game. If a menu is annoying to use or a mechanic lags a realm, I rework it until it’s right.
             </p>
           </div>
         </article>
 
         <div class="stepper reveal" aria-label="How I work">
           <article class="step">
-            <span class="step-index">01</span>
-            <div><h4>Start with the interesting part</h4><p>Figure out what is worth building before I spend time decorating the idea.</p></div>
-            <span class="step-side mono">idea</span>
+            <span class="step-index mono">01</span>
+            <div><h4>Prototype the core hook</h4><p>Skip the fluff first and prove that the main mechanic or visual effect is actually fun in-game.</p></div>
+            <span class="step-side mono">concept</span>
           </article>
           <article class="step">
-            <span class="step-index">02</span>
-            <div><h4>Get a rough version working</h4><p>Build enough of the system to see what feels good, what is awkward, and what needs to change.</p></div>
-            <span class="step-side mono">prototype</span>
+            <span class="step-index mono">02</span>
+            <div><h4>Wire up the scripts & models</h4><p>Connect the Script API logic with custom Blockbench entities, animations, and sound effects.</p></div>
+            <span class="step-side mono">build</span>
           </article>
           <article class="step">
-            <span class="step-index">03</span>
-            <div><h4>Make the pieces agree</h4><p>Bring the visuals, UI, assets, feedback, and mechanics into the same language.</p></div>
+            <span class="step-index mono">03</span>
+            <div><h4>Clean up the UI & feedback</h4><p>Make sure player interactions are obvious, menus are snappy, and nothing feels out of place.</p></div>
             <span class="step-side mono">polish</span>
           </article>
           <article class="step">
-            <span class="step-index">04</span>
-            <div><h4>Put it in front of players</h4><p>Test the release, fix the annoying parts, package it, and publish it.</p></div>
-            <span class="step-side mono">ship</span>
+            <span class="step-index mono">04</span>
+            <div><h4>Package & ship</h4><p>Test in survival and multiplayer, iron out bugs, and publish the release on CurseForge.</p></div>
+            <span class="step-side mono">release</span>
           </article>
         </div>
       </div>
@@ -344,23 +363,24 @@
     <section class="contact-section shell" id="contact">
       <div class="contact-panel reveal">
         <div class="contact-content">
-          <div class="section-label">Contact</div>
-          <h2>Want to build something?</h2>
+          <div class="section-label mono">04 / Contact</div>
+          <h2>Got a project in mind?</h2>
           <p>
-            If you have a Bedrock project, commission, collaboration, or studio role in mind, send me a message on Discord. That is the easiest place to reach me.
+            If you want to collaborate on an addon, need custom Bedrock work for a server, or just want to chat about a project, send me a message on Discord.
           </p>
-          <button class="button contact-trigger" type="button">Open my Discord card <span aria-hidden="true">↗</span></button>
+          <button class="button button-primary contact-trigger" type="button">Open Discord card <span aria-hidden="true">↗</span></button>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer shell">
-    <span>© 2026 Pasta. Minecraft Bedrock creator.</span>
+    <span>© 2026 Pasta (@PastaHimself)</span>
     <div class="footer-links">
+      <a href="https://github.com/PastaHimself" target="_blank" rel="noreferrer">GitHub ↗</a>
       <a href="https://www.curseforge.com/members/pastahimself/projects" target="_blank" rel="noreferrer">CurseForge ↗</a>
       <button class="contact-trigger" type="button">Discord</button>
-      <a href="#home">Back to top ↑</a>
+      <a href="#home">Top ↑</a>
     </div>
   </footer>
 
@@ -368,8 +388,8 @@
     <div class="dialog-inner">
       <div class="dialog-head">
         <div>
-          <small>Discord</small>
-          <h3 id="contactDialogTitle">Message Pasta</h3>
+          <small class="mono">Discord</small>
+          <h3 id="contactDialogTitle">Connect with Pasta</h3>
         </div>
         <button class="dialog-close" type="button" aria-label="Close contact card">×</button>
       </div>
@@ -379,8 +399,8 @@
         <div class="discord-body">
           <div class="discord-avatar"><img src="assets/pasta-avatar.jpeg" alt="" /></div>
           <h4>Pasta_BreakerX</h4>
-          <div class="discord-handle">pastabreaker007</div>
-          <p class="discord-bio">I make Minecraft Bedrock addons. Everything is possible!</p>
+          <div class="discord-handle mono">@pastabreaker007</div>
+          <p class="discord-bio">Making Minecraft Bedrock addons, scripts, and shaders.</p>
           <div class="copy-row">
             <code id="discordUsername">pastabreaker007</code>
             <button class="copy-button" type="button">Copy</button>
@@ -388,7 +408,7 @@
         </div>
       </div>
 
-      <p class="dialog-note">Copy the username, open Discord, and send me a message there.</p>
+      <p class="dialog-note">Copy my handle and add me on Discord—that’s where I reply fastest.</p>
     </div>
   </dialog>
 
@@ -491,7 +511,7 @@
               revealObserver.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.1, rootMargin: '0px 0px -4% 0px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px -4% 0px' });
         revealItems.forEach((item) => revealObserver.observe(item));
       } else {
         revealItems.forEach((item) => item.classList.add('in-view'));
@@ -514,4 +534,3 @@
   </script>
 </body>
 </html>
-
